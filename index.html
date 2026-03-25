@@ -3,25 +3,93 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>C1 English Vocabulary & Phrases</title>
+<title>Vocabulary App</title>
+
 <style>
-body { font-family: Arial, sans-serif; background: #f7f9fc; margin:0; padding:20px; }
-.container { max-width:800px; margin:auto; background:#fff; padding:20px; border-radius:10px; box-shadow:0 0 10px rgba(0,0,0,0.1);}
-h1 { text-align:center; color:#333; }
-ul { list-style:none; padding:0; }
-li { background:#e3f2fd; margin:5px 0; padding:10px; border-radius:5px; cursor:pointer; transition:0.3s; }
-li:hover { background:#bbdefb; }
-#search { width:100%; padding:10px; margin-bottom:15px; border-radius:5px; border:1px solid #ccc; }
+body {
+  font-family: Arial;
+  background:#f4f6fb;
+  margin:0;
+  padding:20px;
+  transition:0.3s;
+}
+
+.container {
+  max-width:800px;
+  margin:auto;
+  background:white;
+  padding:20px;
+  border-radius:10px;
+  box-shadow:0 5px 20px rgba(0,0,0,0.1);
+}
+
+h1 { text-align:center; }
+
+input {
+  width:100%;
+  padding:10px;
+  margin-bottom:10px;
+}
+
+button {
+  padding:10px;
+  margin:5px;
+  border:none;
+  border-radius:5px;
+  background:#1976d2;
+  color:white;
+  cursor:pointer;
+}
+
+button:hover { background:#125ea7; }
+
+li {
+  list-style:none;
+  background:#e3f2fd;
+  margin:5px 0;
+  padding:10px;
+  border-radius:5px;
+  cursor:pointer;
+}
+
+.favorite { background:#c8e6c9; }
+.learned { text-decoration:line-through; }
+
+.dark {
+  background:#121212;
+  color:white;
+}
+.dark .container { background:#1e1e1e; }
+.dark li { background:#333; }
+
 </style>
 </head>
+
 <body>
+
 <div class="container">
-<h1>C1 English Vocabulary & Phrases 💡</h1>
-<input type="text" id="search" placeholder="Search a word or phrase...">
-<ul id="wordList"></ul>
+<h1>📚 Vocabulary App</h1>
+
+<input type="text" id="search" placeholder="Search word...">
+
+<div>
+<button onclick="showAll()">All</button>
+<button onclick="showFavorites()">⭐ Favorites</button>
+<button onclick="randomWord()">🎲 Random</button>
+<button onclick="startQuiz()">🧠 Quiz</button>
+<button onclick="toggleDark()">🌙 Dark</button>
+</div>
+
+<p id="progress"></p>
+<p id="random"></p>
+
+<ul id="list"></ul>
+
 </div>
 
 <script>
+
+
 const words = [
 "Abate – to lessen, reduce",
 "Accentuate – to emphasize",
@@ -980,31 +1048,86 @@ const words = [
 "Vicissitude – change",
 "Vociferous – loud",
 "Volatile – changeable",
-"Voracious – very hungry",
+"Voracious   – very hungry",
 "Wane – decrease",
 "Wily – clever",
 "Wistful – longing",
 "Zealous – enthusiastic",
 "Zenith – peak"
+];
 
-];// Render list
-const wordList = document.getElementById('wordList');
-function render(wordsToRender){
-  wordList.innerHTML = '';
-  wordsToRender.forEach(w=>{
+const list = document.getElementById('list');
+let favorites = new Set();
+let learned = new Set();
+
+function render(arr){
+  list.innerHTML = '';
+  arr.forEach(w=>{
     const li = document.createElement('li');
     li.textContent = w;
-    wordList.appendChild(li);
+
+    if(favorites.has(w)) li.classList.add('favorite');
+    if(learned.has(w)) li.classList.add('learned');
+
+    li.onclick = () => {
+      favorites.has(w) ? favorites.delete(w) : favorites.add(w);
+      render(arr);
+    };
+
+    li.ondblclick = () => {
+      learned.add(w);
+      updateProgress();
+      render(arr);
+    };
+
+    list.appendChild(li);
   });
 }
+
 render(words);
 
-// Search filter
 document.getElementById('search').addEventListener('input', function(){
-  const query = this.value.toLowerCase();
-  const filtered = words.filter(w => w.toLowerCase().includes(query));
-  render(filtered);
+  const q = this.value.toLowerCase();
+  render(words.filter(w => w.toLowerCase().includes(q)));
 });
+
+function showFavorites(){
+  render([...favorites]);
+}
+
+function showAll(){
+  render(words);
+}
+
+function randomWord(){
+  const r = words[Math.floor(Math.random()*words.length)];
+  document.getElementById('random').textContent = "👉 " + r;
+}
+
+function startQuiz(){
+  const w = words[Math.floor(Math.random()*words.length)];
+  const word = w.split(" – ")[0];
+  const answer = w.split(" – ")[1];
+
+  const user = prompt(`Meaning of: ${word}`);
+
+  if(user && answer.toLowerCase().includes(user.toLowerCase())){
+    alert("✅ Correct!");
+  } else {
+    alert("❌ Answer: " + answer);
+  }
+}
+
+function updateProgress(){
+  document.getElementById('progress').textContent =
+    "Learned: " + learned.size;
+}
+
+function toggleDark(){
+  document.body.classList.toggle('dark');
+}
+
 </script>
+
 </body>
 </html>
