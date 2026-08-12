@@ -2,2138 +2,393 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Samira</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>WordVerse — English Learning App</title>
 <style>
-  
-body {
-  margin:0;
-  font-family: Arial;
-  transition:0.3s;
+:root{
+  --bg:#070914; --panel:rgba(18,22,43,.78); --panel2:rgba(27,32,59,.72);
+  --text:#f4f7ff; --muted:#98a3c7; --line:rgba(255,255,255,.09);
+  --a1:#8fa7ff; --a2:#62e6ff; --b1:#64f0ae; --b2:#ffe26b; --c1:#ff9bd4; --c2:#c7a4ff;
 }
-
-/* HOME */
-#home {
-  height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  background: linear-gradient(135deg, #4facfe, #00f2fe);
-  transition:0.3s;
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;color:var(--text);background:var(--bg)}
+body{overflow-x:hidden}
+body:before{
+ content:"";position:fixed;inset:0;z-index:-3;
+ background:
+ radial-gradient(circle at 15% 20%,rgba(100,130,255,.16),transparent 28%),
+ radial-gradient(circle at 85% 25%,rgba(195,100,255,.13),transparent 25%),
+ radial-gradient(circle at 50% 90%,rgba(70,220,190,.10),transparent 30%),
+ linear-gradient(135deg,#050611,#0a0d1d 55%,#080a15);
 }
-
-
-
-
-.grid {
-  display:grid;
-  grid-template-columns: 1fr 1fr;
-  gap:20px;
-  
+#stars{position:fixed;inset:0;z-index:-2;pointer-events:none}
+.star{position:absolute;width:2px;height:2px;background:white;border-radius:50%;opacity:.45;animation:twinkle 2.8s infinite ease-in-out}
+@keyframes twinkle{50%{opacity:1;transform:scale(1.7)}}
+.app{max-width:1180px;margin:auto;padding:18px}
+header{
+ display:flex;align-items:center;justify-content:space-between;gap:12px;
+ padding:12px 0 20px;position:sticky;top:0;z-index:10;
+ background:linear-gradient(var(--bg) 65%,transparent);backdrop-filter:blur(8px)
 }
-.card {
-  width:140px;
-  height:140px;
-  background:white;
-  border-radius:20px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  cursor:pointer;
-  font-size:18px;
-  box-shadow:0 5px 15px rgba(0,0,0,0.2);
-  transition:0.3s;
+.logo{font-weight:900;font-size:23px;letter-spacing:.4px}
+.logo span{color:#a88cff}
+nav{display:flex;gap:7px;flex-wrap:wrap}
+nav button,.btn{
+ border:1px solid var(--line);background:rgba(255,255,255,.045);color:var(--text);
+ border-radius:12px;padding:10px 13px;cursor:pointer;font-weight:700
 }
-
-.card:hover {
-  transform: scale(1.05);
+nav button.active,.btn.primary{background:linear-gradient(135deg,#6c63ff,#9b65ff);border-color:transparent}
+main{padding-bottom:60px}
+.page{display:none}.page.active{display:block}
+.hero{display:grid;grid-template-columns:1.2fr .8fr;gap:16px;margin-top:8px}
+.card{
+ background:linear-gradient(145deg,rgba(20,25,49,.82),rgba(11,15,32,.78));
+ border:1px solid var(--line);border-radius:22px;padding:20px;
+ box-shadow:0 15px 50px rgba(0,0,0,.18);backdrop-filter:blur(15px)
 }
-
-/* PAGES */
-.page {
-  display:none;
-  padding:20px;
-  background:#f4f6fb;
-  min-height:100vh;
-  transition:0.3s;
+h1{font-size:clamp(30px,5vw,58px);line-height:1.02;margin:0 0 12px}
+h2{margin:0 0 14px}.muted{color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:18px}
+.stat{padding:15px;border-radius:16px;background:rgba(255,255,255,.045);border:1px solid var(--line)}
+.stat b{font-size:27px;display:block}
+.visual{min-height:310px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.orbit{width:210px;height:210px;border:1px solid rgba(160,140,255,.35);border-radius:50%;position:relative;box-shadow:0 0 60px rgba(130,100,255,.12)}
+.orbit:before,.orbit:after{content:"";position:absolute;inset:22px;border:1px dashed rgba(100,230,255,.22);border-radius:50%}
+.orbit:after{inset:58px;border-style:solid;border-color:rgba(255,210,110,.18)}
+.core{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:38px}
+.planet{position:absolute;font-size:21px;filter:drop-shadow(0 0 9px rgba(255,255,255,.4))}
+.p1{left:18px;top:55px}.p2{right:20px;top:100px}.p3{left:90px;bottom:15px}.p4{right:35px;bottom:25px}
+.addbar{display:flex;gap:9px;margin:18px 0}.addbar input,.search{
+ flex:1;min-width:0;background:rgba(255,255,255,.055);border:1px solid var(--line);
+ color:var(--text);padding:13px 14px;border-radius:13px;outline:none
 }
-
-button {
-  padding:10px;
-  margin:5px;
-  border:none;
-  background:#1976d2;
-  color:white;
-  cursor:pointer;
-  border-radius:5px;
+.addbar input:focus,.search:focus{border-color:#8277ff}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.filter{border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--muted);padding:8px 10px;border-radius:10px;cursor:pointer}
+.filter.active{color:white;background:rgba(126,106,255,.25);border-color:rgba(150,130,255,.45)}
+.word-list{display:flex;flex-direction:column;gap:9px}
+.word{
+ display:flex;align-items:center;justify-content:space-between;gap:12px;
+ padding:14px 15px;border:1px solid var(--line);border-radius:15px;background:rgba(255,255,255,.035);
+ cursor:pointer;transition:.18s
 }
-
-input {
-  width:100%;
-  padding:10px;
-  margin-bottom:10px;
-}
-
-li {
-  list-style:none;
-  background:#e3f2fd;
-  margin:5px 0;
-  padding:10px;
-  cursor:pointer;
-  border-radius:5px;
-}
-
-.favorite { background:#c8e6c9; }
-.learned { text-decoration: line-through; }
-
-/* DARK MODE */
-body.dark {
-  background:#121212;
-  color: black;
-}
-
-body.dark .page, body.dark li, body.dark button, body.dark input {
-  background:#1e1e1e;
-  color: white;
-}
+.word:hover{transform:translateX(3px);background:rgba(255,255,255,.06)}
+.word-main{display:flex;align-items:center;gap:12px;min-width:0}
+.word-text{font-size:17px;font-weight:800;overflow:hidden;text-overflow:ellipsis}
+.level{font-size:11px;font-weight:900;padding:5px 7px;border-radius:7px;letter-spacing:.5px;flex:none}
+.A1{background:rgba(143,167,255,.15);color:var(--a1)}.A2{background:rgba(98,230,255,.14);color:var(--a2)}
+.B1{background:rgba(100,240,174,.13);color:var(--b1)}.B2{background:rgba(255,226,107,.13);color:var(--b2)}
+.C1{background:rgba(255,155,212,.13);color:var(--c1)}.C2{background:rgba(199,164,255,.15);color:var(--c2)}
+.meta{font-size:12px;color:var(--muted)}
+.empty{text-align:center;padding:40px 15px;color:var(--muted)}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.65);display:none;align-items:center;justify-content:center;padding:18px;z-index:50;backdrop-filter:blur(8px)}
+.modal-bg.show{display:flex}
+.modal{width:min(650px,100%);max-height:90vh;overflow:auto;background:#11162b;border:1px solid var(--line);border-radius:22px;padding:22px;box-shadow:0 25px 90px #000}
+.modal-top{display:flex;justify-content:space-between;gap:15px}
+.close{border:0;background:rgba(255,255,255,.07);color:white;border-radius:10px;width:38px;height:38px;cursor:pointer}
+.bigword{font-size:34px;font-weight:900;margin:8px 0}
+.section{margin-top:18px;padding-top:15px;border-top:1px solid var(--line)}
+.pill{display:inline-block;padding:6px 9px;border-radius:9px;background:rgba(255,255,255,.06);margin:4px 4px 0 0;font-size:13px}
+.context{padding:11px 0;color:#d9def2;border-bottom:1px solid rgba(255,255,255,.06);line-height:1.6}
+.context b{color:white}
+button.speak{border:1px solid var(--line);background:rgba(255,255,255,.05);color:white;border-radius:10px;padding:8px 10px;cursor:pointer}
+.note{font-size:12px;color:#8290b7;margin-top:9px;line-height:1.5}
+@media(max-width:760px){.hero{grid-template-columns:1fr}.visual{min-height:240px}.app{padding:12px}header{align-items:flex-start;flex-direction:column}.stats{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body>
+<div id="stars"></div>
+<div class="app">
+<header>
+  <div class="logo">✦ Word<span>Verse</span></div>
+  <nav>
+    <button data-page="home" class="active">Home</button>
+    <button data-page="words">My Words</button>
+    <button data-page="phrases">My Phrases</button>
+    <button data-page="ai">🤖 AI</button>
+  </nav>
+</header>
 
-<!-- HOME -->
-<div id="home">
-  <div class="grid">
-    <div class="card" onclick="openPage('vocabulary')">📚 Vocabulary</div>
-    <div class="card" onclick="openPage('speaking')">🗣 Speaking</div>
-    <div class="card" onclick="openPage('reading')">📖 Writing</div>
-    <div class="card" onclick="openPage('listening')">🎧 Reading</div>
+<main>
+<section id="home" class="page active">
+ <div class="hero">
+  <div class="card">
+   <div class="muted">YOUR ENGLISH UNIVERSE</div>
+   <h1>Every word makes<br>your world brighter.</h1>
+   <p class="muted">Build your personal vocabulary library. Words and phrases stay saved in this browser even after you leave.</p>
+   <div class="addbar">
+    <input id="quickAdd" placeholder="Add a word or phrase…">
+    <button class="btn primary" onclick="addFromInput()">＋ Add</button>
+   </div>
+   <div class="stats">
+    <div class="stat"><span class="muted">Unique words</span><b id="wordCount">0</b></div>
+    <div class="stat"><span class="muted">Phrases</span><b id="phraseCount">0</b></div>
+    <div class="stat"><span class="muted">Added today</span><b id="dayCount">0</b></div>
+    <div class="stat"><span class="muted">Last 7 days</span><b id="weekCount">0</b></div>
+    <div class="stat"><span class="muted">Last 30 days</span><b id="monthCount">0</b></div>
+   </div>
   </div>
+  <div class="card visual">
+   <div class="orbit"><div class="core">✦</div><div class="planet p1">✦</div><div class="planet p2">✧</div><div class="planet p3">✦</div><div class="planet p4">✧</div></div>
+  </div>
+ </div>
+ <div class="card" style="margin-top:16px">
+  <h2>CEFR collection</h2>
+  <div class="stats" id="levels"></div>
+  <div class="note">The first prototype stores your collection locally. Automatic CEFR, definitions, synonyms and real web contexts will be connected to external dictionary/AI services in the next layer.</div>
+ </div>
+</section>
+
+<section id="words" class="page">
+ <div class="card">
+  <h2>📚 My Words</h2>
+  <div class="addbar"><input id="wordAdd" placeholder="Add a word…"><button class="btn primary" onclick="addWord()">Add</button></div>
+  <input class="search" id="wordSearch" placeholder="Search your words…" oninput="renderWords()">
+  <div class="toolbar" id="wordFilters"></div>
+  <div class="word-list" id="wordList"></div>
+ </div>
+</section>
+
+<section id="phrases" class="page">
+ <div class="card">
+  <h2>💬 My Phrases</h2>
+  <div class="addbar"><input id="phraseAdd" placeholder="Add an idiom, collocation or phrase…"><button class="btn primary" onclick="addPhrase()">Add</button></div>
+  <input class="search" id="phraseSearch" placeholder="Search your phrases…" oninput="renderPhrases()">
+  <div class="toolbar" id="phraseFilters"></div>
+  <div class="word-list" id="phraseList"></div>
+ </div>
+</section>
+<section id="ai" class="page">
+ <div class="card">
+  <div class="muted">PERSONAL ENGLISH TUTOR</div>
+  <h1 style="font-size:clamp(30px,5vw,48px)">🤖 AI</h1>
+  <p class="muted">Ask for translations, definitions, synonyms, CEFR explanations, examples, grammar help or anything about English.</p>
+  <textarea id="aiInput" style="width:100%;min-height:150px;resize:vertical;background:rgba(255,255,255,.055);border:1px solid var(--line);border-radius:14px;color:white;padding:14px;font:inherit;outline:none" placeholder="Masalan: “consequently” ni o‘zbekchaga tarjima qil, C1 darajasini tushuntir va tabiiy misol ber."></textarea>
+  <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+    <button class="btn primary" onclick="askAIPage()">🤖 Ask AI</button>
+    <button class="btn" onclick="document.getElementById('aiInput').value=''">Clear</button>
+  </div>
+  <div id="aiPageAnswer" class="section" style="display:none;white-space:pre-wrap;line-height:1.7"></div>
+  <div class="note">GPT ulanishi uchun xavfsiz server-side endpoint kerak. API kalitini bu HTML faylga yozmang.</div>
+ </div>
+</section>
+</main>
 </div>
 
-<!-- VOCABULARY -->
-<div id="vocabulary" class="page">
-<h2>Samira</h2>
-<input id="search" placeholder="Search...">
-<div>
-<button onclick="showAll()">All</button>
-<button onclick="showFavorites()">⭐</button>
-<button onclick="randomWord()">🎲</button>
-<button onclick="quiz()">Quiz</button>
-<button onclick="toggleDark()">🌙 Dark</button>
-<button onclick="goHome()">Home</button>
-</div>
-<p id="random"></p>
-<p id="progress"></p>
-<ul id="list"></ul>
-</div>
-
-<!-- SPEAKING -->
-<div id="speaking" class="page">
-  <h2>🗣 Speaking Phrases</h2>
-  <button onclick="goHome()">Home</button>
-<button onclick="toggleDark()">🌙 Dark</button>
-
-
-
-
-  <p>1. "I would like to talk about..." — "Men ... haqida gapirmoqchiman..."</p>
-  <p>2. "In my opinion..." — "Mening fikrimcha..."</p>
-  <p>3. "From my perspective..." — "Mening nuqtai nazarimdan..."</p>
-  <p>4. "One reason is..." — "Bir sabab shuki..."</p>
-  <p>5. "For example..." — "Masalan..."</p>
-  <p>6. "To sum up..." — "Xulosa qilib aytganda..."</p>
-  <p>7. "It seems to me that..." — "Menga shunday ko‘rinadi..."</p>
-  <p>8. "I believe that..." — "Men shunday deb o‘ylayman..."</p>
-  <p>9. "On the one hand..." — "Bir tomondan..."</p>
-  <p>10. "On the other hand..." — "Boshqa tomondan..."</p>
-  <p>11. "As far as I am concerned..." — "Menimcha..."</p>
-  <p>12. "I feel that..." — "Men shunday his qilaman..."</p>
-  <p>13. "It is clear that..." — "Aniqki..."</p>
-  <p>14. "I am convinced that..." — "Men ishonganim shuki..."</p>
-  <p>15. "It is important to note that..." — "Shu narsani ta’kidlash muhim..."</p>
-  <p>16. "What I mean is..." — "Men aytmoqchi bo‘lganim..."</p>
-  <p>17. "I am sure that..." — "Men aminmanki..."</p>
-  <p>18. "From my point of view..." — "Mening qarashimcha..."</p>
-  <p>19. "It is worth mentioning that..." — "Shu narsani eslatib o‘tish joiz..."</p>
-  <p>20. "I agree that..." — "Men bunga qo‘shilaman..."</p>
-  <p>21. "I disagree with..." — "Men bunga qo‘shilmayman..."</p>
-  <p>22. "It is often said that..." — "Ko‘pincha shunday deyishadi..."</p>
-  <p>23. "I strongly believe that..." — "Men qat’iy ishonamanki..."</p>
-  <p>24. "As I have mentioned..." — "Men aytganimdek..."</p>
-  <p>25. "It cannot be denied that..." — "Rad etib bo‘lmaydi..."</p>
-  <p>26. "In conclusion..." — "Xulosa qilib aytganda..."</p>
-  <p>27. "To be honest..." — "Rostini aytsam..."</p>
-  <p>28. "Personally, I think..." — "Shaxsan men o‘ylayman..."</p>
-  <p>29. "It is evident that..." — "Bu aniqki..."</p>
-  <p>30. "I would like to emphasize that..." — "Men ta’kidlashni istardim..."</p>
-  <p>31. "In addition..." — "Bundan tashqari..."</p>
-  <p>32. "Moreover..." — "Bundan tashqari..."</p>
-  <p>33. "Furthermore..." — "Shu bilan birga..."</p>
-  <p>34. "On the contrary..." — "Aksincha..."</p>
-  <p>35. "In contrast..." — "Qarama-qarshi..."</p>
-  <p>36. "Although..." — "Garchi..."</p>
-  <p>37. "Even though..." — "Garchi..."</p>
-  <p>38. "Despite..." — "Qaramay..."</p>
-  <p>39. "Nevertheless..." — "Shunga qaramay..."</p>
-  <p>40. "However..." — "Biroq..."</p>
-  <p>41. "Consequently..." — "Natijada..."</p>
-  <p>42. "As a result..." — "Natijada..."</p>
-  <p>43. "Therefore..." — "Shu sababli..."</p>
-  <p>44. "Due to..." — "Sababi bilan..."</p>
-  <p>45. "According to me..." — "Mening fikrimcha..."</p>
-  <p>46. "In my view..." — "Mening nazarimda..."</p>
-  <p>47. "It is obvious that..." — "Aniqki..."</p>
-  <p>48. "It is likely that..." — "Mumkin..."</p>
-  <p>49. "It is unlikely that..." — "Ehtimol emas..."</p>
-  <p>50. "I suppose that..." — "Men taxmin qilamanki..."</p>
-  <p>51. "I assume that..." — "Men faraz qilamanki..."</p>
-  <p>52. "I imagine that..." — "Men tasavvur qilamanki..."</p>
-  <p>53. "Most importantly..." — "Eng muhimi..."</p>
-  <p>54. "The main reason is..." — "Asosiy sabab shuki..."</p>
-  <p>55. "In general..." — "Umuman olganda..."</p>
-  <p>56. "Generally speaking..." — "Umuman olganda..."</p>
-  <p>57. "As usual..." — "Odatdagidek..."</p>
-  <p>58. "Interestingly..." — "Qiziq tomoni shuki..."</p>
-  <p>59. "Surprisingly..." — "Hayratlanarli darajada..."</p>
-  <p>60. "It is necessary that..." — "Zarurki..."</p>
-  <p>61. "It is essential that..." — "Muhimki..."</p>
-  <p>62. "Basically..." — "Asosan..."</p>
-  <p>63. "Essentially..." — "Asosan..."</p>
-  <p>64. "Simply put..." — "Oddiy qilib aytganda..."</p>
-  <p>65. "To put it briefly..." — "Qisqacha aytganda..."</p>
-  <p>66. "To put it another way..." — "Boshqa so‘z bilan aytganda..."</p>
-  <p>67. "In other words..." — "Boshqa so‘z bilan aytganda..."</p>
-  <p>68. "All in all..." — "Umuman olganda..."</p>
-  <p>69. "In short..." — "Qisqasi..."</p>
-  <p>70. "To conclude..." — "Xulosa qilganda..."</p>
-  <p>71. "To summarize..." — "Xulosa qilganda..."</p>
-  <p>72. "It goes without saying that..." — "Aytilmasdan turib aytish mumkinki..."</p>
-  <p>73. "I strongly suggest that..." — "Men qat’iy tavsiya qilaman..."</p>
-  <p>74. "I recommend that..." — "Men tavsiya qilaman..."</p>
-  <p>75. "I advise that..." — "Men maslahat beraman..."</p>
-  <p>76. "It is a good idea to..." — "Bu yaxshi g‘oya..."</p>
-  <p>77. "It is better to..." — "Bu yaxshiroq..."</p>
-  <p>78. "It is important to..." — "Muhimki..."</p>
-  <p>79. "I hope that..." — "Umid qilamanki..."</p>
-  <p>80. "I think that..." — "Men o‘ylayman..."</p>
-  <p>81. "I feel that..." — "Men his qilaman..."</p>
-  <p>82. "I know that..." — "Men bilaman..."</p>
-  <p>83. "I remember that..." — "Men eslayman..."</p>
-  <p>84. "I forget that..." — "Men unutaman..."</p>
-  <p>85. "I understand that..." — "Men tushunaman..."</p>
-  <p>86. "I believe that..." — "Men ishonaman..."</p>
-  <p>87. "I assume that..." — "Men faraz qilaman..."</p>
-  <p>88. "I imagine that..." — "Men tasavvur qilaman..."</p>
-  <p>89. "It seems that..." — "Shunday ko‘rinadi..."</p>
-  <p>90. "I am sure that..." — "Men aminmanki..."</p>
-  <p>91. "I am certain that..." — "Men ishonchim komilki..."</p>
-  <p>92. "I am convinced that..." — "Men ishonganim shuki..."</p>
-  <p>93. "It is likely that..." — "Ehtimol shuki..."</p>
-  <p>94. "It is unlikely that..." — "Ehtimol emas..."</p>
-  <p>95. "It is possible that..." — "Mumkinki..."</p>
-  <p>96. "It is impossible that..." — "Mumkin emas..."</p>
-  <p>97. "As far as I know..." — "Qolganicha bilishimcha..."</p>
-  <p>98. "To my knowledge..." — "Mening bilishimcha..."</p>
-  <p>99. "I have no doubt that..." — "Shubham yo‘qki..."</p>
-  <p>100. "I doubt that..." — "Shubham bor..."</p>
-  <p>101. "I wonder if..." — "Qiziqki..."</p>
-<p>102. "I am interested in..." — "Men qiziqaman..."</p>
-<p>103. "I am curious about..." — "Men qiziqaman..."</p>
-<p>104. "I am looking forward to..." — "Men intizorlik bilan kutyapman..."</p>
-<p>105. "I am eager to..." — "Men shoshilaman..."</p>
-<p>106. "I am happy that..." — "Men xursandman..."</p>
-<p>107. "I am sad that..." — "Men xafa bo‘ldim..."</p>
-<p>108. "I am pleased that..." — "Men mamnunman..."</p>
-<p>109. "I am disappointed that..." — "Men hafsalam pir bo‘ldi..."</p>
-<p>110. "I am surprised that..." — "Men hayratdaman..."</p>
-<p>111. "It is a pity that..." — "Afsuski..."</p>
-<p>112. "I am afraid that..." — "Men qo‘rqaman..."</p>
-<p>113. "It is important to note that..." — "Muhimi shuki..."</p>
-<p>114. "I would like to emphasize that..." — "Men ta’kidlashni istardim..."</p>
-<p>115. "It is worth noting that..." — "Shu narsani eslatib o‘tish joiz..."</p>
-<p>116. "I should point out that..." — "Shu narsaga e’tibor qaratishim kerak..."</p>
-<p>117. "From my point of view..." — "Mening qarashimcha..."</p>
-<p>118. "In my view..." — "Mening nazarimda..."</p>
-<p>119. "As I see it..." — "Menimcha..."</p>
-<p>120. "As far as I am concerned..." — "Menimcha..."</p>
-<p>121. "It appears that..." — "Shunday ko‘rinadi..."</p>
-<p>122. "It seems to me that..." — "Menga shunday ko‘rinadi..."</p>
-<p>123. "It strikes me that..." — "Menga shunday tuyuladi..."</p>
-<p>124. "It occurs to me that..." — "Menga shunday keladi..."</p>
-<p>125. "I have the impression that..." — "Menga shunday taassurot bo‘ldi..."</p>
-<p>126. "I get the feeling that..." — "Men shunday his qilaman..."</p>
-<p>127. "I would say that..." — "Men aytardimki..."</p>
-<p>128. "I must say that..." — "Men aytishim kerakki..."</p>
-<p>129. "I have to admit that..." — "Men tan olamanki..."</p>
-<p>130. "I cannot deny that..." — "Men inkor eta olmaymanki..."</p>
-<p>131. "It is obvious that..." — "Bu aniqki..."</p>
-<p>132. "It is evident that..." — "Bu ravshan..."</p>
-<p>133. "It goes without saying that..." — "Aytilmasdan turib aytish mumkinki..."</p>
-<p>134. "It is clear that..." — "Aniqki..."</p>
-<p>135. "It is certain that..." — "Shubhasizki..."</p>
-<p>136. "It is undeniable that..." — "Rad etib bo‘lmaydi..."</p>
-<p>137. "I am aware that..." — "Men bilamanki..."</p>
-<p>138. "I am not aware that..." — "Men bilmaymanki..."</p>
-<p>139. "I realize that..." — "Men tushunamanki..."</p>
-<p>140. "I understand that..." — "Men tushunaman..."</p>
-<p>141. "It is necessary that..." — "Zarurki..."</p>
-<p>142. "It is essential that..." — "Muhimki..."</p>
-<p>143. "It is important that..." — "Muhimki..."</p>
-<p>144. "It is crucial that..." — "Juda muhimki..."</p>
-<p>145. "It is vital that..." — "Juda zarurki..."</p>
-<p>146. "It is fundamental that..." — "Asosiy shuki..."</p>
-<p>147. "It is mandatory that..." — "Majburiyki..."</p>
-<p>148. "It is advisable that..." — "Tavsiya qilinadi..."</p>
-<p>149. "It is recommended that..." — "Tavsiya qilinadi..."</p>
-<p>150. "It is suggested that..." — "Taklif qilinadi..."</p>
-<p>151. "I suggest that..." — "Men taklif qilaman..."</p>
-<p>152. "I recommend that..." — "Men tavsiya qilaman..."</p>
-<p>153. "I advise that..." — "Men maslahat beraman..."</p>
-<p>154. "I encourage that..." — "Men rag‘batlantiraman..."</p>
-<p>155. "I prefer that..." — "Men afzal ko‘raman..."</p>
-<p>156. "I hope that..." — "Umid qilamanki..."</p>
-<p>157. "I wish that..." — "Xohlardimki..."</p>
-<p>158. "I would like that..." — "Men istardimki..."</p>
-<p>159. "It would be better if..." — "Shunday bo‘lsa yaxshi bo‘lardi..."</p>
-<p>160. "It would be nice if..." — "Shunday bo‘lsa yaxshi bo‘lardi..."</p>
-<p>161. "It would be great if..." — "Shunday bo‘lsa zo‘r bo‘lardi..."</p>
-<p>162. "It would be wonderful if..." — "Shunday bo‘lsa ajoyib bo‘lardi..."</p>
-<p>163. "It would be amazing if..." — "Shunday bo‘lsa hayratlanarli bo‘lardi..."</p>
-<p>164. "It is possible that..." — "Mumkinki..."</p>
-<p>165. "It is impossible that..." — "Mumkin emas..."</p>
-<p>166. "It is likely that..." — "Ehtimol shuki..."</p>
-<p>167. "It is unlikely that..." — "Ehtimol emas..."</p>
-<p>168. "It is probable that..." — "Ehtimol shuki..."</p>
-<p>169. "It is improbable that..." — "Ehtimol emas..."</p>
-<p>170. "It may be that..." — "Mumkin shuki..."</p>
-<p>171. "It might be that..." — "Mumkin shuki..."</p>
-<p>172. "It must be that..." — "Majbur shuki..."</p>
-<p>173. "It can be that..." — "Mumkin shuki..."</p>
-<p>174. "It could be that..." — "Mumkin shuki..."</p>
-<p>175. "It should be that..." — "Shunday bo‘lishi kerakki..."</p>
-<p>176. "It ought to be that..." — "Shunday bo‘lishi kerakki..."</p>
-<p>177. "It seems likely that..." — "Ehtimol shuki..."</p>
-<p>178. "It seems unlikely that..." — "Ehtimol emas..."</p>
-<p>179. "It looks as though..." — "Shunday ko‘rinadi..."</p>
-<p>180. "It looks like..." — "Shunday ko‘rinadi..."</p>
-<p>181. "It sounds as though..." — "Shunday eshitiladi..."</p>
-<p>182. "It sounds like..." — "Shunday eshitiladi..."</p>
-<p>183. "It feels as though..." — "Shunday his qilinadi..."</p>
-<p>184. "It feels like..." — "Shunday his qilinadi..."</p>
-<p>185. "I suppose that..." — "Men faraz qilaman..."</p>
-<p>186. "I assume that..." — "Men faraz qilaman..."</p>
-<p>187. "I imagine that..." — "Men tasavvur qilaman..."</p>
-<p>188. "I expect that..." — "Men kutamanki..."</p>
-<p>189. "I anticipate that..." — "Men kutamanki..."</p>
-<p>190. "I predict that..." — "Men taxmin qilamanki..."</p>
-<p>191. "I forecast that..." — "Men oldindan aytaman..."</p>
-<p>192. "It is reasonable to assume that..." — "Shunday deb faraz qilish o‘rinli..."</p>
-<p>193. "It is fair to say that..." — "Shu deyish adolatli..."</p>
-<p>194. "It is logical that..." — "Mantiqan shuki..."</p>
-<p>195. "It is natural that..." — "Tabiiyki..."</p>
-<p>196. "It is common that..." — "Odatdagidek..."</p>
-<p>197. "It is rare that..." — "Kam uchraydi..."</p>
-<p>198. "It is unusual that..." — "G‘ayrioddiyki..."</p>
-<p>199. "It is typical that..." — "Oddiy holatda..."</p>
-<p>200. "It is important to remember that..." — "Shu narsani yodda tutish muhim..."</p>
-<p>201. "It is crucial to remember that..." — "Shu narsani yodda tutish juda muhim..."</p>
-<p>202. "It is necessary to remember that..." — "Shu narsani eslab qolish zarur..."</p>
-<p>203. "It is worth remembering that..." — "Shu narsani eslab qolish joiz..."</p>
-<p>204. "It is advisable to remember that..." — "Shu narsani eslab qolish tavsiya qilinadi..."</p>
-<p>205. "It is suggested to remember that..." — "Shu narsani eslab qolish taklif qilinadi..."</p>
-<p>206. "It is recommended to remember that..." — "Shu narsani eslab qolish tavsiya qilinadi..."</p>
-<p>207. "It is essential to remember that..." — "Shu narsani eslab qolish juda zarur..."</p>
-<p>208. "It is interesting that..." — "Qiziq tomoni shuki..."</p>
-<p>209. "It is surprising that..." — "Hayratlanarli tomoni shuki..."</p>
-<p>210. "It is shocking that..." — "Hayratlanarli darajada..."</p>
-<p>211. "It is amazing that..." — "Hayratlanarli darajada..."</p>
-<p>212. "It is wonderful that..." — "Ajoyib darajada..."</p>
-<p>213. "It is incredible that..." — "Ishonib bo‘lmaydigan darajada..."</p>
-<p>214. "It is unbelievable that..." — "Ishonib bo‘lmaydigan darajada..."</p>
-<p>215. "It is fantastic that..." — "Zo‘r darajada..."</p>
-<p>216. "It is terrific that..." — "Ajoyib darajada..."</p>
-<p>217. "It is marvelous that..." — "Hayratlanarli darajada..."</p>
-<p>218. "It is excellent that..." — "Zo‘r darajada..."</p>
-<p>219. "It is impressive that..." — "Ta’sirli darajada..."</p>
-<p>220. "It is remarkable that..." — "E’tiborga loyiq darajada..."</p>
-<p>221. "It is significant that..." — "Muhim darajada..."</p>
-<p>222. "It is vital that..." — "Juda zarur darajada..."</p>
-<p>223. "It is crucial that..." — "Juda muhim darajada..."</p>
-<p>224. "It is necessary that..." — "Zarur darajada..."</p>
-<p>225. "It is helpful that..." — "Foydali darajada..."</p>
-<p>226. "It is useful that..." — "Foydali darajada..."</p>
-<p>227. "It is beneficial that..." — "Foydali darajada..."</p>
-<p>228. "It is important that..." — "Muhim darajada..."</p>
-<p>229. "It is essential that..." — "Muhim darajada..."</p>
-<p>230. "It is critical that..." — "Juda muhim darajada..."</p>
-<p>231. "It is relevant that..." — "Tegishli darajada..."</p>
-<p>232. "It is advisable that..." — "Tavsiya qilinadi darajada..."</p>
-<p>233. "It is suggested that..." — "Taklif qilinadi darajada..."</p>
-<p>234. "It is recommended that..." — "Tavsiya qilinadi darajada..."</p>
-<p>235. "It is preferable that..." — "Afzalroq darajada..."</p>
-<p>236. "It is better that..." — "Yaxshiroq darajada..."</p>
-<p>237. "It is necessary to..." — "Zarur darajada..."</p>
-<p>238. "It is important to..." — "Muhim darajada..."</p>
-<p>239. "It is essential to..." — "Muhim darajada..."</p>
-<p>240. "It is crucial to..." — "Juda muhim darajada..."</p>
-<p>241. "It is vital to..." — "Juda zarur darajada..."</p>
-<p>242. "It is useful to..." — "Foydali darajada..."</p>
-<p>243. "It is helpful to..." — "Foydali darajada..."</p>
-<p>244. "It is beneficial to..." — "Foydali darajada..."</p>
-<p>245. "It is advisable to..." — "Tavsiya qilinadi darajada..."</p>
-<p>246. "It is suggested to..." — "Taklif qilinadi darajada..."</p>
-<p>247. "It is recommended to..." — "Tavsiya qilinadi darajada..."</p>
-<p>248. "It is preferable to..." — "Afzalroq darajada..."</p>
-<p>249. "It is better to..." — "Yaxshiroq darajada..."</p>
-<p>250. "It is necessary for..." — "Zarur darajada..."</p>
-<p>251. "It is important for..." — "Muhim darajada..."</p>
-<p>252. "It is essential for..." — "Muhim darajada..."</p>
-<p>253. "It is crucial for..." — "Juda muhim darajada..."</p>
-<p>254. "It is vital for..." — "Juda zarur darajada..."</p>
-<p>255. "It is useful for..." — "Foydali darajada..."</p>
-<p>256. "It is helpful for..." — "Foydali darajada..."</p>
-<p>257. "It is beneficial for..." — "Foydali darajada..."</p>
-<p>258. "It is advisable for..." — "Tavsiya qilinadi darajada..."</p>
-<p>259. "It is suggested for..." — "Taklif qilinadi darajada..."</p>
-<p>260. "It is recommended for..." — "Tavsiya qilinadi darajada..."</p>
-<p>261. "It is preferable for..." — "Afzalroq darajada..."</p>
-<p>262. "It is better for..." — "Yaxshiroq darajada..."</p>
-<p>263. "It is necessary to remember..." — "Eslab qolish zarur..."</p>
-<p>264. "It is important to remember..." — "Eslab qolish muhim..."</p>
-<p>265. "It is essential to remember..." — "Eslab qolish juda muhim..."</p>
-<p>266. "It is crucial to remember..." — "Eslab qolish juda zarur..."</p>
-<p>267. "It is vital to remember..." — "Eslab qolish juda zarur..."</p>
-<p>268. "It is useful to remember..." — "Eslab qolish foydali..."</p>
-<p>269. "It is helpful to remember..." — "Eslab qolish foydali..."</p>
-<p>270. "It is beneficial to remember..." — "Eslab qolish foydali..."</p>
-<p>271. "I am convinced that..." — "Men ishonganim shuki..."</p>
-<p>272. "It is likely that..." — "Ehtimol shuki..."</p>
-<p>273. "It is unlikely that..." — "Ehtimol emas..."</p>
-<p>274. "It is possible that..." — "Mumkinki..."</p>
-<p>275. "It is impossible that..." — "Mumkin emas..."</p>
-<p>276. "As far as I know..." — "Qolganicha bilishimcha..."</p>
-<p>277. "To my knowledge..." — "Mening bilishimcha..."</p>
-<p>278. "I have no doubt that..." — "Shubham yo‘qki..."</p>
-<p>279. "I doubt that..." — "Shubham bor..."</p>
-<p>280. "I wonder if..." — "Qiziqki..."</p>
-<p>281. "I am interested in..." — "Men qiziqaman..."</p>
-<p>282. "I am curious about..." — "Men qiziqaman..."</p>
-<p>283. "I am looking forward to..." — "Men intizorlik bilan kutyapman..."</p>
-<p>284. "I am eager to..." — "Men shoshilaman..."</p>
-<p>285. "I am happy that..." — "Men xursandman..."</p>
-<p>286. "I am sad that..." — "Men xafa bo‘ldim..."</p>
-<p>287. "I am pleased that..." — "Men mamnunman..."</p>
-<p>288. "I am disappointed that..." — "Men hafsalam pir bo‘ldi..."</p>
-<p>289. "I am surprised that..." — "Men hayratdaman..."</p>
-<p>290. "It is a pity that..." — "Afsuski..."</p>
-<p>291. "I am afraid that..." — "Men qo‘rqaman..."</p>
-<p>292. "It is important to note that..." — "Muhimi shuki..."</p>
-<p>293. "I would like to emphasize that..." — "Men ta’kidlashni istardim..."</p>
-<p>294. "It is worth noting that..." — "Shu narsani eslatib o‘tish joiz..."</p>
-<p>295. "I should point out that..." — "Shu narsaga e’tibor qaratishim kerak..."</p>
-<p>296. "From my point of view..." — "Mening qarashimcha..."</p>
-<p>297. "In my view..." — "Mening nazarimda..."</p>
-<p>298. "As I see it..." — "Menimcha..."</p>
-<p>299. "As far as I am concerned..." — "Menimcha..."</p>
-<p>300. "It appears that..." — "Shunday ko‘rinadi..."</p>
-<p>301. "It seems to me that..." — "Menga shunday ko‘rinadi..."</p>
-<p>302. "It strikes me that..." — "Menga shunday tuyuladi..."</p>
-<p>303. "It occurs to me that..." — "Menga shunday keladi..."</p>
-<p>304. "I have the impression that..." — "Menga shunday taassurot bo‘ldi..."</p>
-<p>305. "I get the feeling that..." — "Men shunday his qilaman..."</p>
-<p>306. "I would say that..." — "Men aytardimki..."</p>
-<p>307. "I must say that..." — "Men aytishim kerakki..."</p>
-<p>308. "I have to admit that..." — "Men tan olamanki..."</p>
-<p>309. "I cannot deny that..." — "Men inkor eta olmaymanki..."</p>
-<p>310. "It is obvious that..." — "Bu aniqki..."</p>
-<p>311. "It is evident that..." — "Bu ravshan..."</p>
-<p>312. "It goes without saying that..." — "Aytilmasdan turib aytish mumkinki..."</p>
-<p>313. "It is clear that..." — "Aniqki..."</p>
-<p>314. "It is certain that..." — "Shubhasizki..."</p>
-<p>315. "It is undeniable that..." — "Rad etib bo‘lmaydi..."</p>
-<p>316. "I am aware that..." — "Men bilamanki..."</p>
-<p>317. "I am not aware that..." — "Men bilmaymanki..."</p>
-<p>318. "I realize that..." — "Men tushunamanki..."</p>
-<p>319. "I understand that..." — "Men tushunaman..."</p>
-<p>320. "It is necessary that..." — "Zarurki..."</p>
-<p>321. "It is essential that..." — "Muhimki..."</p>
-<p>322. "It is important that..." — "Muhimki..."</p>
-<p>323. "It is crucial that..." — "Juda muhimki..."</p>
-<p>324. "It is vital that..." — "Juda zarurki..."</p>
-<p>325. "It is fundamental that..." — "Asosiy shuki..."</p>
-<p>326. "It is mandatory that..." — "Majburiyki..."</p>
-<p>327. "It is advisable that..." — "Tavsiya qilinadi..."</p>
-<p>328. "It is recommended that..." — "Tavsiya qilinadi..."</p>
-<p>329. "It is suggested that..." — "Taklif qilinadi..."</p>
-<p>330. "I suggest that..." — "Men taklif qilaman..."</p>
-<p>331. "I recommend that..." — "Men tavsiya qilaman..."</p>
-<p>332. "I advise that..." — "Men maslahat beraman..."</p>
-<p>333. "I encourage that..." — "Men rag‘batlantiraman..."</p>
-<p>334. "I prefer that..." — "Men afzal ko‘raman..."</p>
-<p>335. "I hope that..." — "Umid qilamanki..."</p>
-<p>336. "I wish that..." — "Xohlardimki..."</p>
-<p>337. "I would like that..." — "Men istardimki..."</p>
-<p>338. "It would be better if..." — "Shunday bo‘lsa yaxshi bo‘lardi..."</p>
-<p>339. "It would be nice if..." — "Shunday bo‘lsa yaxshi bo‘lardi..."</p>
-<p>340. "It would be great if..." — "Shunday bo‘lsa zo‘r bo‘lardi..."</p>
-<p>341. "It would be wonderful if..." — "Shunday bo‘lsa ajoyib bo‘lardi..."</p>
-<p>342. "It would be amazing if..." — "Shunday bo‘lsa hayratlanarli bo‘lardi..."</p>
-<p>343. "It is possible that..." — "Mumkinki..."</p>
-<p>344. "It is impossible that..." — "Mumkin emas..."</p>
-<p>345. "It is likely that..." — "Ehtimol shuki..."</p>
-<p>346. "It is unlikely that..." — "Ehtimol emas..."</p>
-<p>347. "It is probable that..." — "Ehtimol shuki..."</p>
-<p>348. "It is improbable that..." — "Ehtimol emas..."</p>
-<p>349. "It may be that..." — "Mumkin shuki..."</p>
-<p>350. "It might be that..." — "Mumkin shuki..."</p>
-<p>351. "It must be that..." — "Majbur shuki..."</p>
-<p>352. "It can be that..." — "Mumkin shuki..."</p>
-<p>353. "It could be that..." — "Mumkin shuki..."</p>
-<p>354. "It should be that..." — "Shunday bo‘lishi kerakki..."</p>
-<p>355. "It ought to be that..." — "Shunday bo‘lishi kerakki..."</p>
-<p>356. "It seems likely that..." — "Ehtimol shuki..."</p>
-<p>357. "It seems unlikely that..." — "Ehtimol emas..."</p>
-<p>358. "It looks as though..." — "Shunday ko‘rinadi..."</p>
-<p>359. "It looks like..." — "Shunday ko‘rinadi..."</p>
-<p>360. "It sounds as though..." — "Shunday eshitiladi..."</p>
-<p>361. "It sounds like..." — "Shunday eshitiladi..."</p>
-<p>362. "It feels as though..." — "Shunday his qilinadi..."</p>
-<p>363. "It feels like..." — "Shunday his qilinadi..."</p>
-<p>364. "I suppose that..." — "Men faraz qilaman..."</p>
-<p>365. "I assume that..." — "Men faraz qilaman..."</p>
-<p>366. "I imagine that..." — "Men tasavvur qilaman..."</p>
-<p>367. "I expect that..." — "Men kutamanki..."</p>
-<p>368. "I anticipate that..." — "Men kutamanki..."</p>
-<p>369. "I predict that..." — "Men taxmin qilamanki..."</p>
-<p>370. "I forecast that..." — "Men oldindan aytaman..."</p>
-<p>371. "It is reasonable to assume that..." — "Shunday deb faraz qilish o‘rinli..."</p>
-<p>372. "It is fair to say that..." — "Shu deyish adolatli..."</p>
-<p>373. "It is logical that..." — "Mantiqan shuki..."</p>
-<p>374. "It is natural that..." — "Tabiiyki..."</p>
-<p>375. "It is common that..." — "Odatdagidek..."</p>
-<p>376. "It is rare that..." — "Kam uchraydi..."</p>
-<p>377. "It is unusual that..." — "G‘ayrioddiyki..."</p>
-<p>378. "It is typical that..." — "Oddiy holatda..."</p>
-<p>379. "It is important to remember that..." — "Shu narsani yodda tutish muhim..."</p>
-<p>380. "It is crucial to remember that..." — "Shu narsani yodda tutish juda muhim..."</p>
-<p>381. "It is necessary to remember that..." — "Shu narsani eslab qolish zarur..."</p>
-<p>382. "It is worth remembering that..." — "Shu narsani eslab qolish joiz..."</p>
-<p>383. "It is advisable to remember that..." — "Shu narsani eslab qolish tavsiya qilinadi..."</p>
-<p>384. "It is suggested to remember that..." — "Shu narsani eslab qolish taklif qilinadi..."</p>
-<p>385. "It is recommended to remember that..." — "Shu narsani eslab qolish tavsiya qilinadi..."</p>
-<p>386. "It is essential to remember that..." — "Shu narsani eslab qolish juda zarur..."</p>
-<p>387. "It is interesting that..." — "Qiziq tomoni shuki..."</p>
-<p>388. "It is surprising that..." — "Hayratlanarli tomoni shuki..."</p>
-<p>389. "It is shocking that..." — "Hayratlanarli darajada..."</p>
-<p>390. "It is amazing that..." — "Hayratlanarli darajada..."</p>
-<p>391. "It is wonderful that..." — "Ajoyib darajada..."</p>
-<p>392. "It is incredible that..." — "Ishonib bo‘lmaydigan darajada..."</p>
-<p>393. "It is unbelievable that..." — "Ishonib bo‘lmaydigan darajada..."</p>
-<p>394. "It is fantastic that..." — "Zo‘r darajada..."</p>
-<p>395. "It is terrific that..." — "Ajoyib darajada..."</p>
-<p>396. "It is marvelous that..." — "Hayratlanarli darajada..."</p>
-<p>397. "It is excellent that..." — "Zo‘r darajada..."</p>
-<p>398. "It is impressive that..." — "Ta’sirli darajada..."</p>
-<p>399. "It is remarkable that..." — "E’tiborga loyiq darajada..."</p>
-<p>400. "It is significant that..." — "Muhim darajada..."</p>
-<p>401. "It is vital that..." — "Juda zarur darajada..."</p>
-<p>402. "It is crucial that..." — "Juda muhim darajada..."</p>
-<p>403. "It is necessary that..." — "Zarur darajada..."</p>
-<p>404. "It is helpful that..." — "Foydali darajada..."</p>
-<p>405. "It is useful that..." — "Foydali darajada..."</p>
-<p>406. "It is beneficial that..." — "Foydali darajada..."</p>
-<p>407. "It is important that..." — "Muhim darajada..."</p>
-<p>408. "It is essential that..." — "Muhim darajada..."</p>
-<p>409. "It is critical that..." — "Juda muhim darajada..."</p>
-<p>410. "It is relevant that..." — "Tegishli darajada..."</p>
-<p>411. "It is advisable that..." — "Tavsiya qilinadi darajada..."</p>
-<p>412. "It is suggested that..." — "Taklif qilinadi darajada..."</p>
-<p>413. "It is recommended that..." — "Tavsiya qilinadi darajada..."</p>
-<p>414. "It is preferable that..." — "Afzalroq darajada..."</p>
-<p>415. "It is better that..." — "Yaxshiroq darajada..."</p>
-<p>416. "It is necessary to..." — "Zarur darajada..."</p>
-<p>417. "It is important to..." — "Muhim darajada..."</p>
-<p>418. "It is essential to..." — "Muhim darajada..."</p>
-<p>419. "It is crucial to..." — "Juda muhim darajada..."</p>
-<p>420. "It is vital to..." — "Juda zarur darajada..."</p>
-<p>421. "It is useful to..." — "Foydali darajada..."</p>
-<p>422. "It is helpful to..." — "Foydali darajada..."</p>
-<p>423. "It is beneficial to..." — "Foydali darajada..."</p>
-<p>424. "It is advisable to..." — "Tavsiya qilinadi darajada..."</p>
-<p>425. "It is suggested to..." — "Taklif qilinadi darajada..."</p>
-<p>426. "It is recommended to..." — "Tavsiya qilinadi darajada..."</p>
-<p>427. "It is preferable to..." — "Afzalroq darajada..."</p>
-<p>428. "It is better to..." — "Yaxshiroq darajada..."</p>
-<p>429. "It is necessary for..." — "Zarur darajada..."</p>
-<p>430. "It is important for..." — "Muhim darajada..."</p>
-<p>431. "It is essential for..." — "Muhim darajada..."</p>
-<p>432. "It is crucial for..." — "Juda muhim darajada..."</p>
-<p>433. "It is vital for..." — "Juda zarur darajada..."</p>
-<p>434. "It is useful for..." — "Foydali darajada..."</p>
-<p>435. "It is helpful for..." — "Foydali darajada..."</p>
-<p>436. "It is beneficial for..." — "Foydali darajada..."</p>
-<p>437. "It is advisable for..." — "Tavsiya qilinadi darajada..."</p>
-<p>438. "It is suggested for..." — "Taklif qilinadi darajada..."</p>
-<p>439. "It is recommended for..." — "Tavsiya qilinadi darajada..."</p>
-<p>440. "It is preferable for..." — "Afzalroq darajada..."</p>
-<p>441. "It is better for..." — "Yaxshiroq darajada..."</p>
-<p>442. "It is necessary to remember..." — "Eslab qolish zarur..."</p>
-<p>443. "It is important to remember..." — "Eslab qolish muhim..."</p>
-<p>444. "It is essential to remember..." — "Eslab qolish juda muhim..."</p>
-<p>445. "It is crucial to remember..." — "Eslab qolish juda zarur..."</p>
-<p>446. "It is vital to remember..." — "Eslab qolish juda zarur..."</p>
-<p>447. "It is useful to remember..." — "Eslab qolish foydali..."</p>
-<p>448. "It is helpful to remember..." — "Eslab qolish foydali..."</p>
-<p>449. "It is beneficial to remember..." — "Eslab qolish foydali..."</p>
-<p>450. "It is important to remember..." — "Eslab qolish muhim..."</p>
-<p>451. "It is essential to remember..." — "Eslab qolish juda muhim..."</p>
-<p>452. "It is crucial to remember..." — "Eslab qolish juda zarur..."</p>
-<p>453. "It is vital to remember..." — "Eslab qolish juda zarur..."</p>
-<p>454. "It is useful to remember..." — "Eslab qolish foydali..."</p>
-<p>455. "It is helpful to remember..." — "Eslab qolish foydali..."</p>
-<p>456. "It is beneficial to remember..." — "Eslab qolish foydali..."</p>
-<p>457. "It is interesting that..." — "Qiziq tomoni shuki..."</p>
-<p>458. "It is surprising that..." — "Hayratlanarli tomoni shuki..."</p>
-<p>459. "It is shocking that..." — "Hayratlanarli darajada..."</p>
-<p>460. "It is amazing that..." — "Hayratlanarli darajada..."</p>
-<p>461. "It is wonderful that..." — "Ajoyib darajada..."</p>
-<p>462. "It is incredible that..." — "Ishonib bo‘lmaydigan darajada..."</p>
-<p>463. "It is unbelievable that..." — "Ishonib bo‘lmaydigan darajada..."</p>
-<p>464. "It is fantastic that..." — "Zo‘r darajada..."</p>
-<p>465. "It is terrific that..." — "Ajoyib darajada..."</p>
-<p>466. "It is marvelous that..." — "Hayratlanarli darajada..."</p>
-<p>467. "It is excellent that..." — "Zo‘r darajada..."</p>
-<p>468. "It is impressive that..." — "Ta’sirli darajada..."</p>
-<p>469. "It is remarkable that..." — "E’tiborga loyiq darajada..."</p>
-<p>470. "It is significant that..." — "Muhim darajada..."</p>
-<p>471. "It is vital that..." — "Juda zarur darajada..."</p>
-<p>472. "It is crucial that..." — "Juda muhim darajada..."</p>
-<p>473. "It is necessary that..." — "Zarur darajada..."</p>
-<p>474. "It is helpful that..." — "Foydali darajada..."</p>
-<p>475. "It is useful that..." — "Foydali darajada..."</p>
-<p>476. "It is beneficial that..." — "Foydali darajada..."</p>
-<p>477. "It is important that..." — "Muhim darajada..."</p>
-<p>478. "It is essential that..." — "Muhim darajada..."</p>
-<p>479. "It is critical that..." — "Juda muhim darajada..."</p>
-<p>480. "It is relevant that..." — "Tegishli darajada..."</p>
-<p>481. "It is advisable that..." — "Tavsiya qilinadi darajada..."</p>
-<p>482. "It is suggested that..." — "Taklif qilinadi darajada..."</p>
-<p>483. "It is recommended that..." — "Tavsiya qilinadi darajada..."</p>
-<p>484. "It is preferable that..." — "Afzalroq darajada..."</p>
-<p>485. "It is better that..." — "Yaxshiroq darajada..."</p>
-<p>486. "It is necessary to..." — "Zarur darajada..."</p>
-<p>487. "It is important to..." — "Muhim darajada..."</p>
-<p>488. "It is essential to..." — "Muhim darajada..."</p>
-<p>489. "It is crucial to..." — "Juda muhim darajada..."</p>
-<p>490. "It is vital to..." — "Juda zarur darajada..."</p>
-<p>491. "It is useful to..." — "Foydali darajada..."</p>
-<p>492. "It is helpful to..." — "Foydali darajada..."</p>
-<p>493. "It is beneficial to..." — "Foydali darajada..."</p>
-<p>494. "It is advisable to..." — "Tavsiya qilinadi darajada..."</p>
-<p>495. "It is suggested to..." — "Taklif qilinadi darajada..."</p>
-<p>496. "It is recommended to..." — "Tavsiya qilinadi darajada..."</p>
-<p>497. "It is preferable to..." — "Afzalroq darajada..."</p>
-<p>498. "It is better to..." — "Yaxshiroq darajada..."</p>
-<p>499. "It is necessary for..." — "Zarur darajada..."</p>
-<p>500. "It is important for..." — "Muhim darajada..."</p>
-</div>
-
-
-</div>
-
-<!-- WRITING -->
-<div id="reading" class="page">
-<h2>Writing</h2>
-<button onclick="goHome()">Home</button>
-<button onclick="toggleDark()">🌙 Dark</button>
-<p>Coming soon ...</p>
-</div>
-
-<!-- LISTENING -->
-<div id="listening" class="page">
-<h2>Reading</h2>
-<button onclick="goHome()">Home</button>
-<button onclick="toggleDark()">🌙 Dark</button>
-<p>Coming soon...</p>
+<div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()">
+ <div class="modal" id="modal"></div>
 </div>
 
 <script>
-/* PAGE SWITCH */
-function openPage(id){
-  document.getElementById("home").style.display="none";
-  document.querySelectorAll(".page").forEach(p=>p.style.display="none");
-  document.getElementById(id).style.display="block";
+const KEY="wordverse_v1";
+let db=JSON.parse(localStorage.getItem(KEY)||'{"words":[],"phrases":[]}');
+const levels=["ALL","A1","A2","B1","B2","C1","C2"];
+let wordFilter="ALL", phraseFilter="ALL";
+
+function save(){localStorage.setItem(KEY,JSON.stringify(db));updateAll()}
+function norm(s){return s.trim().toLowerCase().replace(/\s+/g," ")}
+function looksPhrase(s){return s.trim().split(/\s+/).length>1}
+function guessLevel(s){
+  // Temporary local estimate. The production version should replace this with a CEFR source/API.
+  const n=s.length;
+  if(n<=4)return "A1";
+  if(n<=6)return "A2";
+  if(n<=8)return "B1";
+  if(n<=10)return "B2";
+  if(n<=12)return "C1";
+  return "C2";
+}
+function addFromInput(){
+ const el=document.getElementById("quickAdd"),v=el.value.trim(); if(!v)return;
+ looksPhrase(v)?addPhraseValue(v):addWordValue(v); el.value="";
+}
+function addWord(){const el=document.getElementById("wordAdd");addWordValue(el.value);el.value=""}
+function addPhrase(){const el=document.getElementById("phraseAdd");addPhraseValue(el.value);el.value=""}
+function addWordValue(v){
+ v=v.trim(); if(!v)return;
+ const key=norm(v);
+ if(db.words.some(x=>x.key===key)||db.phrases.some(x=>x.key===key))return;
+ db.words.unshift({key,text:v,level:guessLevel(v),created:Date.now(),reviews:0});
+ save(); showPage("words");
+}
+function addPhraseValue(v){
+ v=v.trim(); if(!v)return;
+ const key=norm(v);
+ if(db.words.some(x=>x.key===key)||db.phrases.some(x=>x.key===key))return;
+ db.phrases.unshift({key,text:v,level:guessLevel(v),created:Date.now(),reviews:0,type:"Phrase"});
+ save(); showPage("phrases");
+}
+function showPage(id){
+ document.querySelectorAll(".page").forEach(p=>p.classList.toggle("active",p.id===id));
+ document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===id));
+}
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>showPage(b.dataset.page));
+
+function makeFilters(target,type){
+ const el=document.getElementById(target); el.innerHTML="";
+ levels.forEach(l=>{
+  const b=document.createElement("button");b.className="filter "+((type==="w"?wordFilter:phraseFilter)===l?"active":"");
+  b.textContent=l;
+  b.onclick=()=>{if(type==="w")wordFilter=l;else phraseFilter=l;renderWords();renderPhrases()};
+  el.appendChild(b);
+ });
+}
+function renderWords(){
+ makeFilters("wordFilters","w");
+ const q=norm(document.getElementById("wordSearch")?.value||"");
+ const arr=db.words.filter(x=>(wordFilter==="ALL"||x.level===wordFilter)&&x.key.includes(q));
+ const box=document.getElementById("wordList");box.innerHTML="";
+ if(!arr.length){box.innerHTML='<div class="empty">No words here yet.<br>Add your first word above.</div>';return}
+ arr.forEach(x=>box.appendChild(item(x,false)));
+}
+function renderPhrases(){
+ makeFilters("phraseFilters","p");
+ const q=norm(document.getElementById("phraseSearch")?.value||"");
+ const arr=db.phrases.filter(x=>(phraseFilter==="ALL"||x.level===phraseFilter)&&x.key.includes(q));
+ const box=document.getElementById("phraseList");box.innerHTML="";
+ if(!arr.length){box.innerHTML='<div class="empty">No phrases here yet.<br>Add an expression above.</div>';return}
+ arr.forEach(x=>box.appendChild(item(x,true)));
+}
+function item(x,isPhrase){
+ const d=document.createElement("div");d.className="word";d.onclick=()=>openItem(x,isPhrase);
+ d.innerHTML=`<div class="word-main"><span class="level ${x.level}">${x.level}</span><span class="word-text">${escapeHtml(x.text)}</span></div><div class="meta">${isPhrase?"PHRASE":"WORD"} · ${formatDate(x.created)} ›</div>`;
+ return d;
+}
+function escapeHtml(s){return s.replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+
+let currentItem=null;
+
+function openItem(x,isPhrase){
+ currentItem=x; x.reviews=(x.reviews||0)+1; save();
+ const title=escapeHtml(x.text);
+ document.getElementById("modal").innerHTML=`
+ <div class="modal-top"><div><span class="level ${x.level}">${x.level}</span><div class="bigword">${title}</div></div><button class="close" onclick="closeModal()">×</button></div>
+ <button class="speak" onclick="speakWord(${JSON.stringify(x.text)})">🔊 Pronounce</button>
+ <div class="section"><h3>Definition</h3><div id="liveDefinition" class="muted">Loading…</div></div>
+ <div class="section"><h3>Synonyms</h3><div id="liveSynonyms" class="muted">Loading…</div></div>
+ <div class="section"><h3>AI tutor</h3>
+   <button class="btn primary" onclick="askTutor()">🤖 Ask GPT</button>
+   <div id="aiAnswer" class="context" style="display:none"></div>
+   <div class="note">For a secure GPT connection, configure a server-side AI endpoint. Never expose an API key in browser code.</div>
+ </div>
+ <div class="section"><h3>Real contexts</h3><div id="liveContexts" class="context">Loading examples…</div></div>
+ <div class="note">Reviewed ${x.reviews} time(s). Saved permanently in this browser.</div>`;
+ document.getElementById("modalBg").classList.add("show");
+ loadWordData(x.text);
 }
 
-function goHome(){
-  document.querySelectorAll(".page").forEach(p=>p.style.display="none");
-  document.getElementById("home").style.display="flex";
+async function loadWordData(term){
+ const d=document.getElementById("liveDefinition"), s=document.getElementById("liveSynonyms"), c=document.getElementById("liveContexts");
+ if(!d)return;
+ if(looksPhrase(term)){
+   d.innerHTML="Phrase detected. The phrase meaning can be supplied by the AI tutor.";
+   s.innerHTML="Phrase synonyms will be supplied by the AI tutor.";
+   c.innerHTML="Phrase context search will be connected through the AI/corpus layer.";
+   return;
+ }
+ try{
+   const r=await fetch("https://api.dictionaryapi.dev/api/v2/entries/en/"+encodeURIComponent(term));
+   if(!r.ok)throw new Error("dictionary");
+   const data=await r.json(), entry=data[0];
+   const defs=[];
+   const syns=new Set();
+   (entry.meanings||[]).forEach(m=>{
+     (m.definitions||[]).slice(0,2).forEach(z=>defs.push(`<b>${escapeHtml(m.partOfSpeech||"")}</b> — ${escapeHtml(z.definition)}`));
+     (m.synonyms||[]).forEach(z=>syns.add(z));
+   });
+   d.innerHTML=defs.length?defs.join("<br><br>"):"No definition found.";
+   if(entry.phonetics?.length){
+     const ph=entry.phonetics.find(x=>x.text);
+     if(ph?.text)d.innerHTML+=`<div class="note">${escapeHtml(ph.text)}</div>`;
+   }
+   // Datamuse supplies additional synonym candidates without an API key.
+   try{
+     const sr=await fetch("https://api.datamuse.com/words?rel_syn="+encodeURIComponent(term)+"&max=30");
+     if(sr.ok){
+       const arr=await sr.json();
+       arr.forEach(z=>syns.add(z.word));
+     }
+   }catch(_){}
+   const list=[...syns].slice(0,30);
+   s.innerHTML=list.length?list.map(z=>`<span class="pill">${escapeHtml(z)}</span>`).join(""):"No synonyms found.";
+   const examples=[];
+   (entry.meanings||[]).forEach(m=>(m.definitions||[]).forEach(z=>{if(z.example)examples.push(z.example)}));
+   c.innerHTML=examples.length?
+   `<div class="note">Dictionary examples are shown as sourced excerpts. For longer internet texts, the AI/corpus layer should return links and short excerpts rather than copying whole copyrighted articles.</div>`+
+   examples.slice(0,8).map(e=>`<div class="context">“${escapeHtml(e)}”</div>`).join("")
+   :"No example sentences supplied by this dictionary.";
+ }catch(e){
+   d.textContent="Could not load the dictionary right now.";
+   s.textContent="Try again when you are online.";
+   c.textContent="Live context data requires an internet connection.";
+ }
 }
 
-/* DARK MODE */
-function toggleDark(){
-  document.body.classList.toggle("dark");
+async function askTutor(){
+ const box=document.getElementById("aiAnswer");
+ if(!box||!currentItem)return;
+ box.style.display="block";
+ box.textContent="AI tutor endpoint is not configured yet.";
 }
 
-/* VOCABULARY DATA */
-const words = [
-"Abandon – to leave completely — tark etmoq",
-"Abate – to lessen — kamaytirmoq",
-"Abduct – to kidnap — o‘g‘irlab ketmoq",
-"Abide – to tolerate — chidamoq",
-"Abolish – to end officially — bekor qilmoq",
-"Absorb – to take in — singdirmoq",
-"Accelerate – to speed up — tezlashtirmoq",
-"Accept – to receive — qabul qilmoq",
-"Access – entry or approach — kirish",
-"Acclaim – to praise — maqtamoq",
-"Accomplish – to achieve — amalga oshirmoq",
-"Accumulate – to gather — to‘plamoq",
-"Accuse – to blame — ayblamoq",
-"Achieve – to succeed — erishmoq",
-"Acknowledge – to recognize — tan olmoq",
-"Acquire – to obtain — qo‘lga kiritmoq",
-"Adapt – to adjust — moslashmoq",
-"Addict – dependent person — qaram odam",
-"Address – to speak to — murojaat qilmoq",
-"Adhere – to stick — yopishmoq",
-"Adjust – to modify — moslashtirmoq",
-"Admire – to respect — hayratlanmoq",
-"Adopt – to take legally — asrab olmoq",
-"Adore – to love deeply — juda yaxshi ko‘rmoq",
-"Advance – to move forward — oldinga siljimoq",
-"Advocate – to support — qo‘llab-quvvatlamoq",
-"Affect – to influence — ta’sir qilmoq",
-"Afford – to have enough money — qurbi yetmoq",
-"Agree – to have same opinion — rozi bo‘lmoq",
-"Aid – to help — yordam bermoq",
-"Aim – goal or purpose — maqsad",
-"Alarm – warning — ogohlantirish",
-"Alert – watchful — hushyor",
-"Allocate – to assign — taqsimlamoq",
-"Allow – to permit — ruxsat bermoq",
-"Alter – to change — o‘zgartirmoq",
-"Amass – to gather — yig‘moq",
-"Amaze – to surprise — hayratlantirmoq",
-"Analyze – to examine — tahlil qilmoq",
-"Anchor – stability — tayanch",
-"Announce – to declare — e’lon qilmoq",
-"Annoy – to irritate — jahli chiqarmoq",
-"Answer – reply — javob",
-"Anticipate – to expect — oldindan kutmoq",
-"Apologize – to say sorry — kechirim so‘ramoq",
-"Appeal – to request — murojaat qilmoq",
-"Appear – to seem — ko‘rinmoq",
-"Apply – to use — qo‘llamoq",
-"Appoint – to assign — tayinlamoq",
-"Appreciate – to value — qadrlamoq",
-"Approach – to come near — yaqinlashmoq",
-"Approve – to accept — tasdiqlamoq",
-"Argue – to dispute — bahslashmoq",
-"Arise – to occur — yuzaga kelmoq",
-"Arrange – to organize — tartibga solmoq",
-"Arrive – to reach — yetib kelmoq",
-"Ascend – to go up — ko‘tarilmoq",
-"Ask – to question — so‘ramoq",
-"Assess – to evaluate — baholamoq",
-"Assign – to give task — topshirmoq",
-"Assist – to help — yordam bermoq",
-"Assume – to suppose — taxmin qilmoq",
-"Assure – to promise — ishontirmoq",
-"Attach – to join — biriktirmoq",
-"Attack – to strike — hujum qilmoq",
-"Attempt – to try — urinmoq",
-"Attend – to be present — qatnashmoq",
-"Attract – to draw — jalb qilmoq",
-"Audit – to check — tekshirmoq",
-"Avoid – to prevent — oldini olmoq",
-"Awake – to wake up — uyg‘onmoq",
-"Balance – stability — muvozanat",
-"Ban – to forbid — taqiqlamoq",
-"Behave – to act — o‘zini tutmoq",
-"Belong – to be owned — tegishli bo‘lmoq",
-"Benefit – advantage — foyda",
-"Blame – to accuse — ayblamoq",
-"Blend – to mix — aralashtirmoq",
-"Boost – to increase — oshirmoq",
-"Borrow – to take — qarz olmoq",
-"Bother – to disturb — bezovta qilmoq",
-"Break – to destroy — buzmoq",
-"Build – to construct — qurmoq",
-"Calculate – to compute — hisoblamoq",
-"Capture – to catch — qo‘lga olmoq",
-"Care – concern — g‘amxo‘rlik",
-"Carry – to transport — olib yurmoq",
-"Catch – to grab — tutmoq",
-"Cause – reason — sabab",
-"Celebrate – to honor — nishonlamoq",
-"Change – to alter — o‘zgartirmoq",
-"Choose – to select — tanlamoq",
-"Clarify – to explain — aniqlashtirmoq",
-"Collect – to gather — yig‘moq",
-"Combine – to join — birlashtirmoq",
-"Communicate – to share — muloqot qilmoq",
-"Compare – to contrast — solishtirmoq",
-"Compete – to try win — raqobatlashmoq",
-"Complete – to finish — tugatmoq",
-"Concentrate – to focus — diqqat qaratmoq",
-"Concern – worry — tashvish",
-"Confirm – to verify — tasdiqlamoq",
-"Connect – to link — bog‘lamoq",
-"Consider – to think — hisobga olmoq",
-"Construct – to build — qurmoq",
-"Contain – to hold — o‘z ichiga olmoq",
-"Continue – to go on — davom etmoq",
-"Control – to manage — boshqarmoq",
-"Convert – to change form — aylantirmoq",
-"Convince – to persuade — ishontirmoq",
-"Create – to make — yaratmoq",
-"Criticize – to judge — tanqid qilmoq",
-"Decide – to choose — qaror qilmoq",
-"Declare – to announce — e’lon qilmoq",
-"Decrease – to reduce — kamaytirmoq",
-"Define – to explain — ta’riflamoq",
-"Deliver – to bring — yetkazmoq",
-"Demand – to require — talab qilmoq",
-"Demonstrate – to show — ko‘rsatmoq",
-"Depend – to rely — bog‘liq bo‘lmoq",
-"Describe – to explain — tasvirlamoq",
-"Design – to plan — loyihalamoq",
-"Develop – to grow — rivojlantirmoq",
-"Determine – to decide — aniqlamoq",
-"Discuss – to talk — muhokama qilmoq",
-"Display – to show — namoyish qilmoq",
-"Distribute – to give out — tarqatmoq",
-"Divide – to split — bo‘lmoq",
-"Earn – to get money — pul topmoq",
-"Educate – to teach — o‘qitmoq",
-"Effect – result — natija",
-"Encourage – to support — ruhlantirmoq",
-"Endure – to tolerate — chidamoq",
-"Enhance – to improve — yaxshilamoq",
-"Ensure – to guarantee — kafolatlamoq",
-"Establish – to set up — tashkil qilmoq",
-"Evaluate – to judge — baholamoq",
-"Examine – to inspect — tekshirmoq",
-"Expand – to grow — kengaytirmoq",
-"Expect – to anticipate — kutmoq",
-"Explain – to make clear — tushuntirmoq",
-"Explore – to investigate — o‘rganmoq",
-"Express – to show feelings — ifoda etmoq",
-"Extend – to lengthen — uzaytirmoq",
-"Face – to confront — duch kelmoq",
-"Facilitate – to make easier — osonlashtirmoq",
-"Fail – to be unsuccessful — muvaffaqiyatsiz bo‘lmoq",
-"Fall – to drop — yiqilmoq",
-"Feature – characteristic — xususiyat",
-"Feed – to give food — ovqatlantirmoq",
-"Feel – to sense — his qilmoq",
-"Fight – to battle — jang qilmoq",
-"Fill – to make full — to‘ldirmoq",
-"Find – to discover — topmoq",
-"Finish – to complete — tugatmoq",
-"Focus – to concentrate — diqqatni jamlamoq",
-"Follow – to go after — ergashmoq",
-"Forbid – to not allow — taqiqlamoq",
-"Force – to make do — majburlamoq",
-"Form – to create — shakllantirmoq",
-"Formulate – to develop — shakllantirmoq",
-"Foster – to encourage — rivojlantirmoq",
-"Gain – to obtain — qo‘lga kiritmoq",
-"Gather – to collect — yig‘moq",
-"Generate – to produce — yaratmoq",
-"Get – to receive — olmoq",
-"Give – to provide — bermoq",
-"Go – to move — bormoq",
-"Govern – to rule — boshqarmoq",
-"Grab – to take quickly — ushlamoq",
-"Grow – to increase — o‘smoq",
-"Handle – to manage — boshqarmoq",
-"Happen – to occur — sodir bo‘lmoq",
-"Harm – to damage — zarar yetkazmoq",
-"Help – to assist — yordam bermoq",
-"Hide – to conceal — yashirmoq",
-"Highlight – to emphasize — ajratib ko‘rsatmoq",
-"Hold – to keep — ushlab turmoq",
-"Hope – to wish — umid qilmoq",
-"Identify – to recognize — aniqlamoq",
-"Ignore – to pay no attention — e’tibor bermaslik",
-"Imagine – to think — tasavvur qilmoq",
-"Improve – to make better — yaxshilamoq",
-"Include – to contain — o‘z ichiga olmoq",
-"Increase – to grow — oshirmoq",
-"Indicate – to show — ko‘rsatmoq",
-"Influence – to affect — ta’sir qilmoq",
-"Inform – to tell — xabar bermoq",
-"Initiate – to begin — boshlamoq",
-"Inspect – to examine — tekshirmoq",
-"Install – to set up — o‘rnatmoq",
-"Intend – to plan — niyat qilmoq",
-"Introduce – to present — tanishtirmoq",
-"Invest – to put money — sarmoya kiritmoq",
-"Investigate – to examine — tekshirmoq",
-"Involve – to include — jalb qilmoq",
-"Join – to connect — qo‘shilmoq",
-"Judge – to evaluate — baholamoq",
-"Jump – to leap — sakramoq",
-"Keep – to hold — saqlamoq",
-"Kick – to strike — tepmoq",
-"Kill – to end life — o‘ldirmoq",
-"Know – to understand — bilmoq",
-"Label – to tag — belgilamoq",
-"Lead – to guide — boshqarmoq",
-"Learn – to study — o‘rganmoq",
-"Leave – to depart — ketmoq",
-"Lift – to raise — ko‘tarmoq",
-"Limit – to restrict — cheklamoq",
-"Listen – to hear — tinglamoq",
-"Locate – to find — joyini topmoq",
-"Look – to see — qaramoq",
-"Lose – to misplace — yo‘qotmoq",
-"Maintain – to keep — saqlamoq",
-"Manage – to control — boshqarmoq",
-"Mark – to indicate — belgilamoq",
-"Measure – to calculate — o‘lchamoq",
-"Meet – to encounter — uchrashmoq",
-"Mention – to refer — tilga olmoq",
-"Move – to go — harakatlanmoq",
-"Multiply – to increase — ko‘paytirmoq",
-"Need – necessity — kerak",
-"Neglect – to ignore — e’tiborsiz qoldirmoq",
-"Notice – to observe — sezmoq",
-"Obey – to follow — bo‘ysunmoq",
-"Observe – to watch — kuzatmoq",
-"Obtain – to get — qo‘lga kiritmoq",
-"Offer – to present — taklif qilmoq",
-"Open – to unlock — ochmoq",
-"Operate – to function — ishlatmoq",
-"Order – to request — buyurtma bermoq",
-"Organize – to arrange — tartiblamoq",
-"Overcome – to defeat — yengmoq",
-"Own – to possess — egalik qilmoq",
-"Participate – to take part — qatnashmoq",
-"Pass – to go by — o‘tmoq",
-"Pay – to give money — to‘lamoq",
-"Perform – to carry out — bajarmoq",
-"Permit – to allow — ruxsat bermoq",
-"Persuade – to convince — ishontirmoq",
-"Pick – to choose — tanlamoq",
-"Place – to put — qo‘ymoq",
-"Plan – to organize — rejalashtirmoq",
-"Play – to engage — o‘ynamoq",
-"Point – to indicate — ko‘rsatmoq",
-"Prepare – to get ready — tayyorlamoq",
-"Present – to show — taqdim etmoq",
-"Preserve – to protect — saqlamoq",
-"Press – to push — bosmoq",
-"Prevent – to stop — oldini olmoq",
-"Produce – to create — ishlab chiqarmoq",
-"Protect – to defend — himoya qilmoq",
-"Provide – to supply — ta’minlamoq",
-"Publish – to release — nashr qilmoq",
-"Pull – to drag — tortmoq",
-"Push – to press — itarmoq",
-"Put – to place — qo‘ymoq",
-"Reach – to arrive — yetmoq",
-"Read – to look at text — o‘qimoq",
-"Realize – to understand — tushunmoq",
-"Receive – to get — qabul qilmoq",
-"Recognize – to identify — tanimoq",
-"Recommend – to suggest — tavsiya qilmoq",
-"Record – to register — yozib olmoq",
-"Reduce – to lessen — kamaytirmoq",
-"Reflect – to think — o‘ylamoq",
-"Refuse – to decline — rad etmoq",
-"Regard – to consider — hisoblamoq",
-"Register – to sign up — ro‘yxatdan o‘tmoq",
-"Reject – to refuse — rad etmoq",
-"Relate – to connect — bog‘lamoq",
-"Release – to free — bo‘shatmoq",
-"Remain – to stay — qolmoq",
-"Remove – to take away — olib tashlamoq",
-"Repair – to fix — tuzatmoq",
-"Repeat – to do again — takrorlamoq",
-"Replace – to substitute — almashtirmoq",
-"Reply – to answer — javob bermoq",
-"Report – to inform — xabar bermoq",
-"Represent – to stand for — ifodalamoq",
-"Require – to need — talab qilmoq",
-"Research – to study — tadqiq qilmoq",
-"Respond – to answer — javob bermoq",
-"Restore – to bring back — tiklamoq",
-"Restrict – to limit — cheklamoq",
-"Result – outcome — natija",
-"Return – to come back — qaytmoq",
-"Reveal – to show — ochib bermoq",
-"Review – to check — ko‘rib chiqmoq",
-"Rise – to go up — ko‘tarilmoq",
-"Risk – danger — xavf",
-"Run – to move fast — yugurmoq",
-"Save – to keep — saqlamoq",
-"Say – to speak — aytmoq",
-"Search – to look for — qidirmoq",
-"See – to view — ko‘rmoq",
-"Seek – to try find — izlamoq",
-"Select – to choose — tanlamoq",
-"Sell – to give for money — sotmoq",
-"Send – to dispatch — yubormoq",
-"Serve – to help — xizmat qilmoq",
-"Set – to place — o‘rnatmoq",
-"Settle – to resolve — hal qilmoq",
-"Share – to divide — ulashmoq",
-"Show – to display — ko‘rsatmoq",
-"Sign – to mark — imzo qo‘ymoq",
-"Simple – easy — oddiy",
-"Sing – to vocalize — kuylamoq",
-"Sit – to rest — o‘tirmoq",
-"Sleep – to rest — uxlamoq",
-"Solve – to find answer — yechmoq",
-"Speak – to talk — gapirmoq",
-"Spend – to use money — sarflamoq",
-"Stand – to be upright — turmoq",
-"Start – to begin — boshlamoq",
-"Stay – to remain — qolmoq",
-"Stop – to end — to‘xtatmoq",
-"Study – to learn — o‘rganmoq",
-"Submit – to send — topshirmoq",
-"Succeed – to achieve — muvaffaqiyatga erishmoq",
-"Suggest – to recommend — tavsiya qilmoq",
-"Supply – to provide — ta’minlamoq",
-"Support – to help — qo‘llab-quvvatlamoq",
-"Suppose – to assume — taxmin qilmoq",
-"Survive – to live — omon qolmoq",
-"Take – to grab — olmoq",
-"Talk – to speak — gaplashmoq",
-"Teach – to educate — o‘qitmoq",
-"Tell – to inform — aytmoq",
-"Test – to examine — sinamoq",
-"Think – to consider — o‘ylamoq",
-"Throw – to toss — uloqtirmoq",
-"Touch – to feel — tegmoq",
-"Train – to teach — mashq qildirmoq",
-"Travel – to go — sayohat qilmoq",
-"Treat – to behave — muomala qilmoq",
-"Try – to attempt — urinmoq",
-"Turn – to rotate — burilmoq",
-"Understand – to know — tushunmoq",
-"Use – to apply — ishlatmoq",
-"Value – worth — qiymat",
-"Visit – to go see — tashrif buyurmoq",
-"Wait – to stay — kutmoq",
-"Walk – to move — yurmoq",
-"Want – desire — xohlamoq",
-"Watch – to observe — tomosha qilmoq",
-"Win – to succeed — yutmoq",
-"Work – to labor — ishlamoq",
-"Write – to record — yozmoq",
-"Ability – skill — qobiliyat",
-"Able – capable — qodir",
-"Abroad – in another country — chet elda",
-"Absolute – complete — mutlaq",
-"Abstract – theoretical — mavhum",
-"Abundant – plentiful — mo‘l",
-"Academic – educational — akademik",
-"Acceptable – satisfactory — maqbul",
-"Accessible – easy to reach — kirish mumkin",
-"Accidental – not planned — tasodifiy",
-"Accurate – correct — aniq",
-"Achievable – possible — erishsa bo‘ladigan",
-"Active – energetic — faol",
-"Actual – real — haqiqiy",
-"Additional – extra — qo‘shimcha",
-"Adequate – enough — yetarli",
-"Adjacent – next to — yonma-yon",
-"Administrative – relating to management — boshqaruvga oid",
-"Admirable – worthy of respect — hurmatga loyiq",
-"Advanced – high level — rivojlangan",
-"Advantage – benefit — afzallik",
-"Adventurous – willing to take risks — jasur",
-"Adverse – unfavorable — salbiy",
-"Aesthetic – relating to beauty — estetik",
-"Aggressive – forceful — tajovuzkor",
-"Agricultural – related to farming — qishloq xo‘jaligiga oid",
-"Alertness – attentiveness — hushyorlik",
-"Alternative – another option — muqobil",
-"Ambition – strong desire — maqsad, intilish",
-"Amusing – funny — kulgili",
-"Ancient – very old — qadimiy",
-"Anger – strong feeling — g‘azab",
-"Annual – yearly — yillik",
-"Anxious – worried — xavotirli",
-"Apparent – obvious — aniq ko‘rinib turgan",
-"Appropriate – suitable — mos",
-"Approximate – nearly exact — taxminiy",
-"Architect – designer of buildings — arxitektor",
-"Area – region — hudud",
-"Argument – disagreement — bahs",
-"Artificial – man-made — sun’iy",
-"Aspect – part — jihat",
-"Assistive – helpful — yordamchi",
-"Assumption – belief without proof — taxmin",
-"Atmosphere – surrounding air — muhit",
-"Attachment – connection — bog‘liqlik",
-"Attempted – tried — uringan",
-"Attention – focus — e’tibor",
-"Attitude – way of thinking — munosabat",
-"Attractive – pleasing — jozibali",
-"Available – ready for use — mavjud",
-"Average – typical — o‘rtacha",
-"Awareness – knowledge — xabardorlik",
-"Awful – very bad — juda yomon",
-"Background – history — fon, orqa ma’lumot",
-"Balanceable – stable — muvozanatli",
-"Barrier – obstacle — to‘siq",
-"Basic – simple — asosiy",
-"Beautiful – pleasing — chiroyli",
-"Behavior – actions — xulq-atvor",
-"Belief – faith — ishonch",
-"Beneficial – helpful — foydali",
-"Best – highest quality — eng yaxshi",
-"Better – improved — yaxshiroq",
-"Bitter – sharp taste — achchiq",
-"Blank – empty — bo‘sh",
-"Bold – brave — jasur",
-"Brief – short — qisqa",
-"Bright – full of light — yorqin",
-"Broad – wide — keng",
-"Busy – occupied — band",
-"Calm – peaceful — tinch",
-"Capable – able — qobiliyatli",
-"Careful – cautious — ehtiyotkor",
-"Careless – not careful — beparvo",
-"Central – main — markaziy",
-"Certain – sure — aniq",
-"Challenging – difficult — qiyin",
-"Cheap – low cost — arzon",
-"Cheerful – happy — quvnoq",
-"Chemical – relating to chemistry — kimyoviy",
-"Chief – main — bosh",
-"Childish – immature — bolalarcha",
-"Clear – easy to understand — aniq",
-"Clever – intelligent — aqlli",
-"Close – near — yaqin",
-"Cloudy – full of clouds — bulutli",
-"Coherent – logical — mantiqiy",
-"Cold – low temperature — sovuq",
-"Comfortable – relaxed — qulay",
-"Commercial – related to business — tijoratga oid",
-"Common – usual — odatiy",
-"Comparable – similar — o‘xshash",
-"Complete – whole — to‘liq",
-"Complex – complicated — murakkab",
-"Concerned – worried — tashvishlangan",
-"Confident – sure — ishonchli",
-"Confusing – unclear — chalkash",
-"Connected – linked — bog‘langan",
-"Conscious – aware — ongli",
-"Consistent – regular — izchil",
-"Constant – unchanging — doimiy",
-"Contemporary – modern — zamonaviy",
-"Convenient – easy — qulay",
-"Convincing – believable — ishonarli",
-"Cool – slightly cold — salqin",
-"Correct – right — to‘g‘ri",
-"Costly – expensive — qimmat",
-"Creative – imaginative — ijodiy",
-"Critical – important — muhim",
-"Curious – eager to know — qiziquvchan",
-"Current – present time — hozirgi",
-"Daily – every day — kundalik",
-"Dangerous – risky — xavfli",
-"Dark – lacking light — qorong‘i",
-"Dead – no longer alive — o‘lik",
-"Decent – acceptable — yaxshi",
-"Deep – far down — chuqur",
-"Definite – certain — aniq",
-"Delicious – tasty — mazali",
-"Dependent – relying on — bog‘liq",
-"Detailed – with many details — batafsil",
-"Different – not same — boshqacha",
-"Difficult – hard — qiyin",
-"Direct – straight — to‘g‘ri",
-"Dirty – not clean — iflos",
-"Disappointed – unhappy — hafsalasi pir",
-"Distinct – clear — aniq farqli",
-"Diverse – varied — xilma-xil",
-"Domestic – relating to home — uyga oid",
-"Double – twice — ikki barobar",
-"Dramatic – exciting — dramatik",
-"Dry – not wet — quruq",
-"Dull – boring — zerikarli",
-"Dynamic – energetic — faol",
-"Eager – excited — sabrsiz",
-"Early – before time — erta",
-"Easy – not difficult — oson",
-"Effective – successful — samarali",
-"Efficient – productive — samarador",
-"Elastic – flexible — elastik",
-"Electric – powered by electricity — elektr",
-"Emotional – full of feeling — hissiy",
-"Empty – containing nothing — bo‘sh",
-"Encouraging – supportive — ruhlantiruvchi",
-"Endless – without end — cheksiz",
-"Enormous – very large — juda katta",
-"Entire – whole — butun",
-"Equal – same — teng",
-"Essential – necessary — zarur",
-"Excellent – very good — a’lo",
-"Exciting – thrilling — hayajonli",
-"Expensive – high cost — qimmat",
-"Experienced – skilled — tajribali",
-"Extreme – very great — juda katta",
-"Fair – just — adolatli",
-"Familiar – known — tanish",
-"Famous – well-known — mashhur",
-"Fast – quick — tez",
-"Favorable – positive — ijobiy",
-"Fearful – afraid — qo‘rqoq",
-"Flexible – adaptable — moslashuvchan",
-"Formal – official — rasmiy",
-"Free – not busy — bo‘sh",
-"Fresh – new — yangi",
-"Friendly – kind — do‘stona",
-"Full – complete — to‘la",
-"Funny – humorous — kulgili",
-"General – common — umumiy",
-"Generous – giving — saxiy",
-"Gentle – soft — muloyim",
-"Genuine – real — haqiqiy",
-"Global – worldwide — global",
-"Good – positive — yaxshi",
-"Great – very good — a’lo",
-"Green – color — yashil",
-"Happy – joyful — baxtli",
-"Hard – difficult — qiyin",
-"Healthy – fit — sog‘lom",
-"Heavy – weighty — og‘ir",
-"Helpful – useful — foydali",
-"High – tall — baland",
-"Honest – truthful — halol",
-"Hopeful – optimistic — umidli",
-"Hot – high temperature — issiq",
-"Huge – very big — ulkan",
-"Human – relating to people — insoniy",
-"Important – significant — muhim",
-"Impossible – not possible — imkonsiz",
-"Independent – free — mustaqil",
-"Interesting – engaging — qiziqarli",
-"International – global — xalqaro",
-"Kind – caring — mehribon",
-"Large – big — katta",
-"Late – after time — kech",
-"Lazy – not active — dangasa",
-"Light – not heavy — yengil",
-"Local – nearby — mahalliy",
-"Long – extended — uzun",
-"Loud – noisy — baland ovozli",
-"Low – not high — past",
-"Lucky – fortunate — omadli",
-"Major – very important — asosiy",
-"Male – man — erkak",
-"Massive – very large — ulkan",
-"Material – substance — material",
-"Maximum – highest — maksimal",
-"Meaningful – significant — mazmunli",
-"Medical – relating to health — tibbiy",
-"Mental – relating to mind — aqliy",
-"Minor – small — kichik",
-"Modern – current — zamonaviy",
-"Modest – not extreme — kamtar",
-"Monthly – every month — oylik",
-"Moral – relating to right and wrong — axloqiy",
-"Multiple – many — ko‘p",
-"Mutual – shared — o‘zaro",
-"Narrow – not wide — tor",
-"National – relating to country — milliy",
-"Natural – not artificial — tabiiy",
-"Necessary – needed — zarur",
-"Negative – not positive — salbiy",
-"Nervous – anxious — asabiy",
-"Neutral – not taking sides — betaraf",
-"Normal – usual — normal",
-"Notable – worthy of attention — e’tiborga loyiq",
-"Noticeable – easy to see — sezilarli",
-"Numerous – many — ko‘p",
-"Obvious – clear — aniq",
-"Occasional – sometimes — vaqti-vaqti bilan",
-"Official – authorized — rasmiy",
-"Open – not closed — ochiq",
-"Opposite – completely different — qarama-qarshi",
-"Ordinary – usual — oddiy",
-"Organized – arranged — tartibli",
-"Original – first — original",
-"Other – different — boshqa",
-"Outstanding – excellent — a’lo",
-"Overall – general — umumiy",
-"Overwhelming – very strong — juda kuchli",
-"Painful – causing pain — og‘riqli",
-"Particular – specific — aniq",
-"Passive – not active — passiv",
-"Patient – calm — sabrli",
-"Perfect – without flaws — mukammal",
-"Permanent – lasting — doimiy",
-"Personal – private — shaxsiy",
-"Physical – relating to body — jismoniy",
-"Plain – simple — oddiy",
-"Pleasant – nice — yoqimli",
-"Plenty – a lot — ko‘p",
-"Popular – liked by many — mashhur",
-"Positive – good — ijobiy",
-"Possible – able to happen — mumkin",
-"Powerful – strong — kuchli",
-"Practical – useful — amaliy",
-"Precise – exact — aniq",
-"Predictable – expected — oldindan bilinarli",
-"Present – current — hozirgi",
-"Primary – main — asosiy",
-"Private – personal — shaxsiy",
-"Probable – likely — ehtimoliy",
-"Productive – efficient — samarali",
-"Professional – expert — professional",
-"Profitable – bringing profit — foydali",
-"Proper – correct — to‘g‘ri",
-"Protective – providing safety — himoya qiluvchi",
-"Proud – feeling pride — faxrli",
-"Public – open to all — jamoat",
-"Quick – fast — tez",
-"Quiet – silent — jim",
-"Rapid – very fast — juda tez",
-"Rare – not common — kam uchraydigan",
-"Ready – prepared — tayyor",
-"Realistic – practical — realistik",
-"Reasonable – fair — oqilona",
-"Recent – new — yaqinda bo‘lgan",
-"Regular – usual — muntazam",
-"Relevant – related — tegishli",
-"Reliable – trustworthy — ishonchli",
-"Remote – far away — uzoq",
-"Responsible – accountable — mas’ul",
-"Rich – wealthy — boy",
-"Rough – not smooth — qo‘pol",
-"Safe – secure — xavfsiz",
-"Serious – important — jiddiy",
-"Sharp – pointed — o‘tkir",
-"Short – not long — qisqa",
-"Significant – important — muhim",
-"Silent – no sound — jim",
-"Similar – alike — o‘xshash",
-"Simple – easy — oddiy",
-"Sincere – honest — samimiy",
-"Single – one — bitta",
-"Skilled – experienced — malakali",
-"Slow – not fast — sekin",
-"Small – little — kichik",
-"Smart – intelligent — aqlli",
-"Smooth – even — silliq",
-"Social – relating to society — ijtimoiy",
-"Soft – not hard — yumshoq",
-"Solid – firm — qattiq",
-"Special – unique — maxsus",
-"Specific – exact — aniq",
-"Stable – steady — barqaror",
-"Standard – normal — standart",
-"Strong – powerful — kuchli",
-"Successful – achieving goals — muvaffaqiyatli",
-"Suitable – appropriate — mos",
-"Sure – certain — ishonchli",
-"Surprising – unexpected — hayratlanarli",
-"Sweet – sugary — shirin",
-"Systematic – organized — tizimli",
-"Tall – high — baland",
-"Temporary – not permanent — vaqtinchalik",
-"Tender – soft — nozik",
-"Terrible – very bad — juda yomon",
-"Thick – not thin — qalin",
-"Thin – not thick — yupqa",
-"Thoughtful – considerate — o‘ychan",
-"Traditional – old style — an’anaviy",
-"Transparent – see-through — shaffof",
-"Typical – usual — odatiy",
-"Unable – not capable — qodir emas",
-"Uncertain – unsure — noaniq",
-"Uncomfortable – not relaxed — noqulay",
-"Uncommon – rare — kam uchraydigan",
-"Unfair – unjust — adolatsiz",
-"Unhappy – sad — baxtsiz",
-"Unique – one of a kind — noyob",
-"United – joined — birlashgan",
-"Universal – worldwide — umumjahon",
-"Unknown – not known — noma’lum",
-"Unusual – not normal — noodatiy",
-"Useful – helpful — foydali",
-"Useless – not helpful — foydasiz",
-"Valuable – worth much — qimmatli",
-"Various – different — turli",
-"Vast – very large — keng",
-"Visible – able to see — ko‘rinadigan",
-"Warm – slightly hot — iliq",
-"Weak – not strong — zaif",
-"Wealthy – rich — boy",
-"Weekly – every week — haftalik",
-"Wide – broad — keng",
-"Willing – ready — tayyor",
-"Wise – smart — dono",
-"Wonderful – amazing — ajoyib",
-"Worried – anxious — xavotirlangan",
-"Worthwhile – valuable — arziydigan",
-"Young – not old — yosh",
-"Abandon – leave completely — tark etmoq",
-"Ability – skill, talent — qobiliyat",
-"Abnormal – not normal — normal bo‘lmagan",
-"Absorb – take in — so‘rmoq",
-"Abstract – theoretical — abstrakt, nazariy",
-"Accept – receive willingly — qabul qilmoq",
-"Access – entry — kirish",
-"Accomplish – achieve — erishmoq",
-"Account – record — hisob",
-"Accurate – correct — aniq",
-"Accuse – blame — ayblamoq",
-"Achieve – succeed — erishmoq",
-"Acknowledge – admit — tan olmoq",
-"Acquire – get, obtain — egallamoq",
-"Adapt – adjust — moslashmoq",
-"Add – put in — qo‘shmoq",
-"Address – speak to — murojaat qilmoq",
-"Adjust – change slightly — moslashtirmoq",
-"Admire – respect — hurmat qilmoq",
-"Admit – confess — tan olmoq",
-"Adopt – take as own — qabul qilmoq",
-"Advance – move forward — oldinga siljimoq",
-"Advantage – benefit — foyda",
-"Adventure – exciting experience — sarguzasht",
-"Advertise – promote — e’lon qilmoq",
-"Advice – suggestion — maslahat",
-"Affect – influence — ta’sir qilmoq",
-"Afford – be able to pay — moliyaviy imkoniyatga ega bo‘lmoq",
-"Agree – have same opinion — rozi bo‘lmoq",
-"Alert – watchful — hushyor",
-"Allow – permit — ruxsat bermoq",
-"Alter – change — o‘zgartirmoq",
-"Amuse – entertain — zavqlantirmoq",
-"Analyze – examine closely — tahlil qilmoq",
-"Announce – make public — e’lon qilmoq",
-"Answer – reply — javob bermoq",
-"Anticipate – expect — kutmoq",
-"Apologize – say sorry — uzr so‘ramoq",
-"Appear – become visible — paydo bo‘lmoq",
-"Apply – put to use — qo‘llamoq",
-"Appreciate – value — qadrlamoq",
-"Approach – come near — yaqinlashmoq",
-"Approve – agree with — ma’qullamoq",
-"Argue – discuss — munozara qilmoq",
-"Arrange – organize — tartibga solmoq",
-"Arrive – reach place — yetib kelmoq",
-"Ask – request — so‘ramoq",
-"Assemble – gather — yig‘moq",
-"Assess – evaluate — baholamoq",
-"Assist – help — yordam bermoq",
-"Assume – suppose — taxmin qilmoq",
-"Assure – promise — kafolat bermoq",
-"Astonish – surprise — hayratga solmoq",
-"Attach – join — biriktirmoq",
-"Attempt – try — urinmoq",
-"Attend – be present — qatnashmoq",
-"Attract – draw attention — jalb qilmoq",
-"Avoid – keep away from — qochmoq",
-"Awake – wake up — uyg‘onmoq",
-"Balance – stability — muvozanat",
-"Banish – expel — quvmoq",
-"Bear – endure — chidamoq",
-"Beat – strike — urmoq",
-"Become – begin to be — bo‘lmoq",
-"Begin – start — boshlamoq",
-"Behave – act — xulq qilmoq",
-"Believe – accept as true — ishonmoq",
-"Belong – be part of — tegishli bo‘lmoq",
-"Bend – curve — egilmoq",
-"Benefit – advantage — foyda",
-"Bet – risk money — garov qilmoq",
-"Bind – tie — bog‘lamoq",
-"Blame – hold responsible — ayblamoq",
-"Bleed – lose blood — qonamoq",
-"Bless – confer good — duo qilmoq",
-"Blind – unable to see — ko‘rmaydigan",
-"Blink – close eyes quickly — ko‘z qisish",
-"Block – stop — to‘xtatmoq",
-"Blow – move air — puflamoq",
-"Boast – talk proudly — maqtanmoq",
-"Boil – heat liquid — qaynatmoq",
-"Borrow – take temporarily — qarzga olmoq",
-"Bother – annoy — bezovta qilmoq",
-"Bow – bend forward — egilmoq",
-"Break – separate — sindirmoq",
-"Bring – take — olib kelmoq",
-"Broadcast – transmit — uzatmoq",
-"Build – construct — qurmoq",
-"Burn – set on fire — yoqmoq",
-"Buy – purchase — sotib olmoq",
-"Calculate – compute — hisoblamoq",
-"Call – contact — chaqirmoq",
-"Calm – peaceful — tinch",
-"Capture – catch — tutmoq",
-"Care – concern — g‘amxo‘rlik",
-"Carry – transport — tashimoq",
-"Catch – grab — ushlamoq",
-"Cause – make happen — sabab bo‘lmoq",
-"Celebrate – honor — nishonlamoq",
-"Change – make different — o‘zgartirmoq",
-"Charge – demand payment — to‘lov talab qilmoq",
-"Chase – follow to catch — quvmoq",
-"Cheer – shout happily — xursandlik bilan qichqirmoq",
-"Choose – pick — tanlamoq",
-"Clean – make tidy — tozalamoq",
-"Clear – remove obstacles — tozalamoq",
-"Climb – go up — chiqmoq",
-"Close – shut — yopinmoq",
-"Collect – gather — yig‘moq",
-"Combine – join — birlashtirmoq",
-"Come – move toward — kelmoq",
-"Comfort – ease distress — taskin bermoq",
-"Command – give order — buyruq bermoq",
-"Communicate – share info — aloqa qilmoq",
-"Compare – note similarities — taqqoslamoq",
-"Compete – strive to win — raqobat qilmoq",
-"Complain – express dissatisfaction — shikoyat qilmoq",
-"Complete – finish — tugatmoq",
-"Concentrate – focus — diqqat jamlamoq",
-"Concern – worry — tashvishlanmoq",
-"Confirm – verify — tasdiqlamoq",
-"Connect – join — bog‘lamoq",
-"Consider – think about — o‘ylamoq",
-"Consist – be made of — iborat bo‘lmoq",
-"Consult – seek advice — maslahat qilmoq",
-"Contain – hold — o‘z ichiga olmoq",
-"Continue – keep going — davom ettirmoq",
-"Control – manage — boshqarish",
-"Convert – change form — o‘zgartirmoq",
-"Cook – prepare food — pishirmoq",
-"Copy – reproduce — nusxa ko‘chirmoq",
-"Correct – fix — to‘g‘rilamoq",
-"Cost – require payment — turmoq",
-"Count – enumerate — sanamoq",
-"Cover – protect — qoplamoq",
-"Create – make — yaratmoq",
-"Cross – go over — kesib o‘tmoq",
-"Cry – shed tears — yig‘lamoq",
-"Cut – divide — kesmoq",
-"Damage – harm — zarar yetkazmoq",
-"Dance – move rhythmically — raqsga tushmoq",
-"Decide – make choice — qaror qilmoq",
-"Declare – announce — e’lon qilmoq",
-"Decrease – make less — kamaytirmoq",
-"Defend – protect — himoya qilmoq",
-"Define – explain meaning — ta’riflamoq",
-"Delay – make late — kechiktirmoq",
-"Deliver – bring — yetkazmoq",
-"Deny – refuse — rad etmoq",
-"Depend – rely — bog‘liq bo‘lmoq",
-"Describe – explain — tasvirlamoq",
-"Design – plan — loyihalamoq",
-"Destroy – ruin — yo‘q qilmoq",
-"Detect – discover — aniqlamoq",
-"Determine – decide — aniqlamoq",
-"Develop – grow — rivojlantirmoq",
-"Die – stop living — vafot etmoq",
-"Disappear – go away — yo‘qolmoq",
-"Discover – find — kashf qilmoq",
-"Discuss – talk about — muhokama qilmoq",
-"Dislike – not like — yoqtirmaslik",
-"Divide – separate — bo‘lishmoq",
-"Do – perform — qilmoq",
-"Draw – make picture — chizmoq",
-"Dream – imagine — tush ko‘rmoq",
-"Drive – operate vehicle — haydamoq",
-"Drop – let fall — tushirmoq",
-"Dry – remove moisture — quritmoq",
-"Earn – receive payment — ishlamoq",
-"Eat – consume food — yemoq",
-"Educate – teach — o‘qitmoq",
-"Enjoy – take pleasure — zavqlanmoq",
-"Enter – go in — kirish",
-"Escape – get away — qochmoq",
-"Examine – inspect — tekshirmoq",
-"Excite – thrill — hayajonlantirmoq",
-"Exercise – work out — mashq qilmoq",
-"Exist – be alive — mavjud bo‘lmoq",
-"Expect – anticipate — kutmoq",
-"Explain – make clear — tushuntirmoq",
-"Explore – investigate — tadqiq qilmoq",
-"Express – convey — ifoda qilmoq",
-"Extend – make longer — uzaytirmoq",
-"Face – confront — duch kelmoq",
-"Fail – not succeed — muvaffaqiyatsiz bo‘lmoq",
-"Fall – drop down — yiqilmoq",
-"Fasten – secure — mahkamlamoq",
-"Fear – be afraid — qo‘rqmoq",
-"Feel – experience — his qilmoq",
-"Fight – combat — kurashmoq",
-"Find – locate — topmoq",
-"Finish – complete — tugatmoq",
-"Fit – be suitable — mos kelmoq",
-"Fix – repair — tuzatmoq",
-"Fly – move through air — uchmoq",
-"Follow – go after — ergashmoq",
-"Force – make do — majburlamoq",
-"Form – shape — shakl",
-"Frighten – scare — qo‘rqitmoq",
-"Gain – get — olish",
-"Gather – collect — yig‘moq",
-"Give – provide — berish",
-"Go – move — bormoq",
-"Grow – increase — o‘smoq",
-"Handle – manage — boshqarish",
-"Hang – suspend — osmoq",
-"Have – possess — ega bo‘lmoq",
-"Hear – perceive sound — eshitmoq",
-"Help – assist — yordam bermoq",
-"Hide – conceal — yashirmoq",
-"Hit – strike — urmoq",
-"Hold – keep — ushlamoq",
-"Hurt – cause pain — zarar yetkazmoq",
-"Identify – recognize — aniqlamoq",
-"Ignore – pay no attention — e’tiborsiz qoldirmoq",
-"Imagine – think creatively — tasavvur qilmoq",
-"Imitate – copy — taqlid qilmoq",
-"Improve – make better — yaxshilamoq",
-"Include – contain — o‘z ichiga olmoq",
-"Increase – make more — ko‘paytirmoq",
-"Influence – affect — ta’sir qilmoq",
-"Inform – tell — xabar bermoq",
-"Inquire – ask — so‘ramoq",
-"Insist – demand — talab qilmoq",
-"Install – set up — o‘rnatmoq",
-"Intend – plan — niyat qilmoq",
-"Introduce – present — tanishtirmoq",
-"Invite – ask to come — taklif qilmoq",
-"Join – connect — qo‘shilmoq",
-"Jump – spring up — sakramoq",
-"Keep – hold — saqlamoq",
-"Kill – cause death — o‘ldirmoq",
-"Know – be aware — bilmoq",
-"Land – reach ground — qo‘nmoq",
-"Last – continue — davom etmoq",
-"Laugh – express happiness — kulmoq",
-"Learn – acquire knowledge — o‘rganmoq",
-"Leave – go away — tark etmoq",
-"Lend – give temporarily — qarzga berish",
-"Let – allow — ruxsat bermoq",
-"Lie – recline — yotmoq",
-"Lift – raise — ko‘tarmoq",
-"Like – enjoy — yoqtirmoq",
-"Listen – pay attention — tinglamoq",
-"Live – exist — yashamoq",
-"Look – see — qaramoq",
-"Lose – misplace — yo‘qotmoq",
-"Love – deep affection — sevmoq",
-"Make – create — yaratmoq",
-"Manage – control — boshqarish",
-"Mark – indicate — belgilamoq",
-"Match – be equal — mos kelmoq",
-"Measure – find size — o‘lchamoq",
-"Meet – come together — uchrashmoq",
-"Miss – fail to hit — sog‘inmoq",
-"Move – change position — harakat qilmoq",
-"Need – require — kerak bo‘lmoq",
-"Notice – observe — sezmoq",
-"Offer – present — taklif qilmoq",
-"Open – not closed — ochiq",
-"Order – request — buyurtma qilmoq",
-"Organize – arrange — tartibga solmoq",
-"Own – possess — ega bo‘lmoq",
-"Paint – apply color — bo‘yamoq",
-"Pass – go by — o‘tmoq",
-"Pay – give money — to‘lamoq",
-"Perform – carry out — bajarish",
-"Pick – choose — tanlamoq",
-"Place – put — qo‘ymoq",
-"Plan – arrange — rejalashtirmoq",
-"Play – engage in activity — o‘ynamoq",
-"Point – indicate — ko‘rsatmoq",
-"Prepare – get ready — tayyorlamoq",
-"Present – give — taqdim qilmoq",
-"Press – push — bosmoq",
-"Prevent – stop — oldini olish",
-"Produce – make — ishlab chiqarmoq",
-"Protect – keep safe — himoya qilmoq",
-"Provide – give — ta’minlamoq",
-"Pull – draw — tortmoq",
-"Push – move — itarmoq",
-"Put – place — qo‘ymoq",
-"Raise – lift — ko‘tarmoq",
-"Reach – arrive — yetib kelmoq",
-"Read – understand written words — o‘qimoq",
-"Realize – understand fully — anglamoq",
-"Receive – get — olmoq",
-"Recognize – identify — tanimoq",
-"Reduce – make smaller — kamaytirmoq",
-"Reflect – think — aks ettirmoq",
-"Refuse – decline — rad etmoq",
-"Regret – feel sorry — afsuslanmoq",
-"Relax – rest — dam olmoq",
-"Release – let go — qo‘yib yubormoq",
-"Remember – recall — eslamoq",
-"Repair – fix — tuzatmoq",
-"Repeat – do again — takrorlamoq",
-"Replace – substitute — almashtirmoq",
-"Reply – respond — javob bermoq",
-"Report – give information — xabar bermoq",
-"Request – ask — so‘ramoq",
-"Rescue – save — qutqarmoq",
-"Retire – stop working — nafaqaga chiqmoq",
-"Return – go back — qaytmoq",
-"Reveal – make known — oshkor qilmoq",
-"Rise – move up — ko‘tarilmoq",
-"Run – move quickly — yugurmoq",
-"Save – keep safe — saqlamoq",
-"Say – speak — aytmoq",
-"Search – look for — qidirish",
-"See – perceive — ko‘rmoq",
-"Sell – exchange for money — sotmoq",
-"Send – dispatch — jo‘natmoq",
-"Set – put in place — qo‘ymoq",
-"Share – give portion — bo‘lishmoq",
-"Show – display — ko‘rsatmoq",
-"Shut – close — yopinmoq",
-"Sing – vocalize — kuylamoq",
-"Sit – rest on chair — o‘tirmoq",
-"Sleep – rest — uxlamoq",
-"Slide – move smoothly — sirpanmoq",
-"Smile – expression of happiness — tabassum qilmoq",
-"Sort – arrange — tartiblamoq",
-"Sound – make noise — tovush chiqarmoq",
-"Speak – talk — gapirmoq",
-"Spend – use money — sarflamoq",
-"Stand – be upright — turmoq",
-"Start – begin — boshlamoq",
-"Stay – remain — qolmoq",
-"Stop – halt — to‘xtamoq",
-"Study – learn — o‘rganmoq",
-"Submit – give in — topshirmoq",
-"Succeed – achieve — muvaffaqiyatga erishmoq",
-"Suffer – experience hardship — azob chekmoq",
-"Suggest – recommend — tavsiya qilmoq",
-"Supply – provide — ta’minlamoq",
-"Support – help — yordam bermoq",
-"Survive – continue living — omon qolmoq",
-"Take – grab — olmoq",
-"Talk – speak — gaplashmoq",
-"Teach – instruct — o‘qitmoq",
-"Tell – inform — aytmoq",
-"Think – consider — o‘ylamoq",
-"Throw – propel — uloqtirmoq",
-"Touch – feel — tegmoq",
-"Train – teach skills — o‘rgatmoq",
-"Travel – go from place to place — sayohat qilmoq",
-"Treat – handle — davolamoq",
-"Try – attempt — urinmoq",
-"Turn – change direction — burilmoq",
-"Understand – comprehend — tushunmoq",
-"Use – employ — ishlatmoq",
-"Visit – go to see — tashrif buyurmoq",
-"Wait – stay until — kutmoq",
-"Walk – move on feet — yurmok",
-"Want – desire — xohlash",
-"Watch – look at — tomosha qilmoq",
-"Win – succeed — yutmoq",
-"Work – labor — ishlamoq",
-"Worry – feel anxious — xavotirlanmoq",
-"Write – produce words — yozmoq",
-"Abuse – use wrongly — noto‘g‘ri ishlatmoq",
-"Accelerate – speed up — tezlashtirmoq",
-"Accommodate – provide space — joy berish",
-"Accompany – go with — birga borish",
-"Accumulate – gather — to‘plash",
-"Accuse – charge with — ayblamoq",
-"Acknowledge – recognize — tan olmoq",
-"Acquire – gain — egallamoq",
-"Adapt – adjust — moslashmoq",
-"Addict – devote habitually — qaram bo‘lmoq",
-"Address – speak to — murojaat qilmoq",
-"Adjust – modify — moslashtirmoq",
-"Administer – manage — boshqarish",
-"Advocate – support publicly — himoya qilmoq",
-"Afford – have means — moliyaviy imkoniyatga ega bo‘lmoq",
-"Aggravate – make worse — kuchaytirmoq",
-"Aim – direct — maqsad qilmoq",
-"Alert – warn — ogohlantirmoq",
-"Alter – change — o‘zgartirmoq",
-"Analyze – examine — tahlil qilmoq",
-"Annoy – irritate — bezovta qilmoq",
-"Anticipate – expect — kutmoq",
-"Appoint – assign — tayinlamoq",
-"Appreciate – value — qadrlamoq",
-"Approach – come near — yaqinlashmoq",
-"Approve – accept — ma’qullamoq",
-"Arise – emerge — yuzaga kelmoq",
-"Arrange – organize — tartibga solmoq",
-"Arrest – take into custody — hibsga olmoq",
-"Assess – evaluate — baholamoq",
-"Assign – give task — topshirmoq",
-"Assume – suppose — taxmin qilmoq",
-"Assure – guarantee — kafolat bermoq",
-"Astonish – surprise — hayratga solmoq",
-"Attach – connect — biriktirmoq",
-"Attempt – try — urinmoq",
-"Attend – be present — qatnashmoq",
-"Attract – draw attention — jalb qilmoq",
-"Avoid – keep away — qochmoq",
-"Awaken – wake — uyg‘otmoq",
-"Balance – stability — muvozanat",
-"Ban – prohibit — taqiqlamoq",
-"Bat – hit — urmoq",
-"Bear – tolerate — chidamoq",
-"Beat – strike — urmoq",
-"Become – turn into — bo‘lmoq",
-"Begin – start — boshlamoq",
-"Behave – act — xulq qilmoq",
-"Belong – be part of — tegishli bo‘lmoq",
-"Bend – curve — egilmoq",
-"Benefit – advantage — foyda",
-"Bet – gamble — garov qilmoq",
-"Bind – tie — bog‘lamoq",
-"Blame – hold responsible — ayblamoq",
-"Bleed – lose blood — qonamoq",
-"Block – stop — to‘xtatmoq",
-"Blow – move air — puflamoq",
-"Boast – brag — maqtanmoq",
-"Boil – heat — qaynatmoq",
-"Borrow – take temporarily — qarzga olmoq",
-"Bother – annoy — bezovta qilmoq",
-"Bounce – rebound — sakramoq",
-"Bow – bend forward — egilmoq",
-"Break – fracture — sindirmoq",
-"Bring – carry — olib kelmoq",
-"Broadcast – transmit — uzatmoq",
-"Build – construct — qurmoq",
-"Burn – set fire — yoqmoq",
-"Buy – purchase — sotib olmoq",
-"Calculate – compute — hisoblamoq",
-"Call – contact — chaqirmoq",
-"Calm – relax — tinchlanmoq",
-"Capture – catch — tutmoq",
-"Care – concern — g‘amxo‘rlik",
-"Carry – transport — tashimoq",
-"Catch – grab — ushlamoq",
-"Cause – make happen — sabab bo‘lmoq",
-"Celebrate – honor — nishonlamoq",
-"Change – alter — o‘zgartirmoq",
-"Charge – demand — to‘lov talab qilmoq",
-"Chase – pursue — quvmoq",
-"Check – examine — tekshirmoq",
-"Choose – select — tanlamoq",
-"Claim – assert — da’vo qilmoq",
-"Clean – tidy — tozalamoq",
-"Clear – remove — tozalamoq",
-"Climb – ascend — chiqmoq",
-"Close – shut — yopinmoq",
-"Collect – gather — yig‘moq",
-"Combine – unite — birlashtirmoq",
-"Come – arrive — kelmoq",
-"Comfort – console — taskin bermoq",
-"Command – order — buyruq bermoq",
-"Communicate – convey — aloqa qilmoq",
-"Compare – examine similarities — taqqoslamoq",
-"Compete – contend — raqobat qilmoq",
-"Complain – express dissatisfaction — shikoyat qilmoq",
-"Complete – finish — tugatmoq",
-"Concentrate – focus — diqqat jamlamoq",
-"Concern – worry — tashvishlanmoq",
-"Confirm – verify — tasdiqlamoq",
-"Connect – link — bog‘lamoq",
-"Consider – think about — o‘ylamoq",
-"Consist – be made of — iborat bo‘lmoq",
-"Consult – seek advice — maslahat qilmoq",
-"Contain – hold — o‘z ichiga olmoq",
-"Continue – keep going — davom ettirmoq",
-"Control – manage — boshqarish",
-"Convert – change form — o‘zgartirmoq",
-"Cook – prepare — pishirmoq",
-"Copy – duplicate — nusxa ko‘chirmoq",
-"Correct – fix — to‘g‘rilamoq",
-"Cost – require payment — turmoq",
-"Count – tally — sanamoq",
-"Cover – protect — qoplamoq",
-"Create – make — yaratmoq",
-"Cross – traverse — kesib o‘tmoq",
-"Cry – weep — yig‘lamoq",
-"Cut – divide — kesmoq",
-"Damage – harm — zarar yetkazmoq",
-"Dance – move rhythmically — raqsga tushmoq",
-"Decide – choose — qaror qilmoq",
-"Declare – announce — e’lon qilmoq",
-"Decrease – lessen — kamaytirmoq",
-"Defend – protect — himoya qilmoq",
-"Define – explain — ta’riflamoq",
-"Delay – postpone — kechiktirmoq",
-"Deliver – bring — yetkazmoq",
-"Deny – refuse — rad etmoq",
-"Depend – rely — bog‘liq bo‘lmoq",
-"Describe – depict — tasvirlamoq",
-"Design – plan — loyihalamoq",
-"Destroy – ruin — yo‘q qilmoq",
-"Detect – discover — aniqlamoq",
-"Determine – decide — aniqlamoq",
-"Develop – evolve — rivojlantirmoq",
-"Die – pass away — vafot etmoq",
-"Disagree – differ — rozi bo‘lmaslik",
-"Disappear – vanish — yo‘qolmoq",
-"Discover – find — kashf qilmoq",
-"Discuss – talk about — muhokama qilmoq",
-"Dislike – not like — yoqtirmaslik",
-"Divide – separate — bo‘lishmoq",
-"Do – perform — qilmoq",
-"Draw – sketch — chizmoq",
-"Dream – imagine — tush ko‘rmoq",
-"Drive – operate vehicle — haydamoq",
-"Drop – let fall — tushirmoq",
-"Dry – remove moisture — quritmoq",
-"Earn – gain — ishlamoq",
-"Eat – consume — yemoq",
-"Educate – teach — o‘qitmoq",
-"Enjoy – take pleasure — zavqlanmoq",
-"Enter – go in — kirish",
-"Escape – get away — qochmoq",
-"Examine – inspect — tekshirmoq",
-"Excite – thrill — hayajonlantirmoq",
-"Exercise – practice — mashq qilmoq",
-"Exist – be real — mavjud bo‘lmoq",
-"Expect – anticipate — kutmoq",
-"Explain – clarify — tushuntirmoq",
-"Explore – investigate — tadqiq qilmoq",
-"Express – convey — ifoda qilmoq",
-"Extend – lengthen — uzaytirmoq",
-"Face – confront — duch kelmoq",
-"Fail – not succeed — muvaffaqiyatsiz bo‘lmoq",
-"Fall – drop down — yiqilmoq",
-"Fasten – secure — mahkamlamoq",
-"Fear – be afraid — qo‘rqmoq",
-"Feel – experience — his qilmoq",
-"Fight – struggle — kurashmoq",
-"Find – locate — topmoq",
-"Finish – complete — tugatmoq",
-"Fit – be suitable — mos kelmoq",
-"Fix – repair — tuzatmoq",
-"Fly – move in air — uchmoq",
-"Follow – go after — ergashmoq",
-"Force – compel — majburlamoq",
-"Form – shape — shakl",
-"Frighten – scare — qo‘rqitmoq",
-"Gain – acquire — olish",
-"Gather – collect — yig‘moq",
-"Give – provide — berish",
-"Go – move — bormoq",
-"Grow – increase — o‘smoq",
-"Handle – manage — boshqarish",
-"Hang – suspend — osmoq",
-"Have – possess — ega bo‘lmoq",
-"Hear – perceive sound — eshitmoq",
-"Help – assist — yordam bermoq",
-"Hide – conceal — yashirmoq",
-"Hit – strike — urmoq",
-"Hold – grasp — ushlamoq",
-"Hurt – injure — zarar yetkazmoq",
-"Identify – recognize — aniqlamoq",
-"Ignore – neglect — e’tiborsiz qoldirmoq",
-"Imagine – visualize — tasavvur qilmoq",
-"Imitate – copy — taqlid qilmoq",
-"Improve – enhance — yaxshilamoq",
-"Include – comprise — o‘z ichiga olmoq",
-"Increase – raise — ko‘paytirmoq",
-"Influence – affect — ta’sir qilmoq",
-"Inform – notify — xabar bermoq",
-"Inquire – ask — so‘ramoq",
-"Insist – demand — talab qilmoq",
-"Install – set up — o‘rnatmoq",
-"Intend – plan — niyat qilmoq",
-"Introduce – present — tanishtirmoq",
-"Invite – request presence — taklif qilmoq",
-"Join – connect — qo‘shilmoq",
-"Jump – leap — sakramoq",
-"Keep – retain — saqlamoq",
-"Kill – end life — o‘ldirmoq",
-"Know – be aware — bilmoq",
-"Land – touch ground — qo‘nmoq",
-"Last – continue — davom etmoq",
-"Laugh – express joy — kulmoq",
-"Learn – gain knowledge — o‘rganmoq",
-"Leave – depart — tark etmoq",
-"Lend – loan — qarzga berish",
-"Let – allow — ruxsat bermoq",
-"Lie – recline — yotmoq",
-"Lift – raise — ko‘tarmoq",
-"Like – enjoy — yoqtirmoq",
-"Listen – pay attention — tinglamoq",
-"Live – exist — yashamoq",
-"Look – see — qaramoq",
-"Lose – misplace — yo‘qotmoq",
-"Love – feel affection — sevmoq",
-"Make – create — yaratmoq",
-"Manage – control — boshqarish",
-"Mark – indicate — belgilamoq",
-"Match – correspond — mos kelmoq",
-"Measure – determine size — o‘lchamoq",
-"Meet – encounter — uchrashmoq",
-"Miss – fail to reach — sog‘inmoq",
-"Move – change place — harakat qilmoq",
-"Need – require — kerak bo‘lmoq",
-"Notice – observe — sezmoq",
-"Offer – present — taklif qilmoq",
-"Open – not closed — ochiq",
-"Order – request — buyurtma qilmoq",
-"Organize – arrange — tartibga solmoq",
-"Own – possess — ega bo‘lmoq",
-"Paint – apply color — bo‘yamoq",
-"Pass – go by — o‘tmoq",
-"Pay – give money — to‘lamoq",
-"Perform – carry out — bajarish",
-"Pick – choose — tanlamoq",
-"Place – put — qo‘ymoq",
-"Plan – arrange — rejalashtirmoq",
-"Play – engage — o‘ynamoq",
-"Point – indicate — ko‘rsatmoq",
-"Prepare – get ready — tayyorlamoq",
-"Present – give — taqdim qilmoq",
-"Press – push — bosmoq",
-"Prevent – stop — oldini olish",
-"Produce – create — ishlab chiqarmoq",
-"Protect – guard — himoya qilmoq",
-"Provide – supply — ta’minlamoq",
-"Pull – tug — tortmoq",
-"Push – move — itarmoq",
-"Put – place — qo‘ymoq",
-"Raise – lift — ko‘tarmoq",
-"Reach – arrive — yetib kelmoq",
-"Read – understand — o‘qimoq",
-"Realize – become aware — anglamoq",
-"Receive – get — olmoq",
-"Recognize – identify — tanimoq",
-"Reduce – lessen — kamaytirmoq",
-"Reflect – mirror — aks ettirmoq",
-"Refuse – decline — rad etmoq",
-"Regret – feel sorry — afsuslanmoq",
-"Relax – rest — dam olmoq",
-"Release – let go — qo‘yib yubormoq",
-"Remember – recall — eslamoq",
-"Repair – fix — tuzatmoq",
-"Repeat – do again — takrorlamoq",
-"Replace – substitute — almashtirmoq",
-"Reply – respond — javob bermoq",
-"Report – inform — xabar bermoq",
-"Request – ask — so‘ramoq",
-"Rescue – save — qutqarmoq",
-"Retire – stop working — nafaqaga chiqmoq",
-"Return – go back — qaytmoq",
-"Reveal – disclose — oshkor qilmoq",
-"Rise – move up — ko‘tarilmoq",
-"Run – move fast — yugurmoq",
-"Save – protect — saqlamoq",
-"Say – speak — aytmoq",
-"Search – look for — qidirish",
-"See – perceive — ko‘rmoq",
-"Sell – trade — sotmoq",
-"Send – dispatch — jo‘natmoq",
-"Set – put — qo‘ymoq",
-"Share – divide — bo‘lishmoq",
-"Show – display — ko‘rsatmoq",
-"Shut – close — yopinmoq",
-"Sing – vocalize — kuylamoq",
-"Sit – rest — o‘tirmoq",
-"Sleep – rest — uxlamoq",
-"Slide – glide — sirpanmoq",
-"Smile – show happiness — tabassum qilmoq",
-"Sort – arrange — tartiblamoq",
-"Sound – make noise — tovush chiqarmoq",
-"Speak – talk — gapirmoq",
-"Spend – use — sarflamoq",
-"Stand – be upright — turmoq",
-"Start – begin — boshlamoq",
-"Stay – remain — qolmoq",
-"Stop – halt — to‘xtamoq",
-"Study – learn — o‘rganmoq",
-"Submit – hand in — topshirmoq",
-"Succeed – achieve — muvaffaqiyatga erishmoq",
-"Suffer – endure hardship — azob chekmoq",
-"Suggest – propose — tavsiya qilmoq",
-"Supply – provide — ta’minlamoq",
-"Support – help — yordam bermoq",
-"Survive – continue living — omon qolmoq",
-"Take – grab — olmoq",
-"Talk – speak — gaplashmoq",
-"Teach – instruct — o‘qitmoq",
-"Tell – inform — aytmoq",
-"Think – consider — o‘ylamoq",
-"Throw – propel — uloqtirmoq",
-"Touch – feel — tegmoq",
-"Train – teach skills — o‘rgatmoq",
-"Travel – move — sayohat qilmoq",
-"Treat – handle — davolamoq",
-"Try – attempt — urinmoq",
-"Turn – rotate — burilmoq",
-"Understand – comprehend — tushunmoq",
-"Use – employ — ishlatmoq",
-"Visit – go see — tashrif buyurmoq",
-"Wait – remain — kutmoq",
-"Walk – move — yurmok",
-"Want – desire — xohlash",
-"Watch – observe — tomosha qilmoq",
-"Win – succeed — yutmoq",
-"Work – labor — ishlamoq",
-"Worry – fret — xavotirlanmoq",
-"Write – record — yozmoq"
-
-
-];
-
-let favorites = new Set();
-let learned = new Set();
-const list = document.getElementById("list");
-
-/* RENDER VOCAB */
-function render(arr){
-  list.innerHTML="";
-  arr.forEach((w,i)=>{
-    const li=document.createElement("li");
-    let icon="";
-    if(favorites.has(w)) icon+="⭐ ";
-    if(learned.has(w)) icon+="✔ ";
-    li.textContent = (i+1)+". "+icon+w;
-    li.onclick=()=>{ favorites.has(w)?favorites.delete(w):favorites.add(w); render(arr); }
-    li.ondblclick=()=>{ learned.add(w); updateProgress(); render(arr); }
-
-    list.appendChild(li);
-  });
+function closeModal(){document.getElementById("modalBg").classList.remove("show")}
+function speakWord(t){
+ if("speechSynthesis"in window){speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(t);u.lang="en-US";speechSynthesis.speak(u)}
+}
+function formatDate(ts){
+ const d=new Date(ts);
+ return d.toLocaleDateString(undefined,{day:"2-digit",month:"short"});
+}
+function countSince(days){
+ const now=Date.now(), start=now-days*86400000;
+ return [...db.words,...db.phrases].filter(x=>x.created>=start).length;
+}
+function startOfToday(){
+ const d=new Date(); d.setHours(0,0,0,0); return d.getTime();
+}
+function updateGrowthStats(){
+ const today=[...db.words,...db.phrases].filter(x=>x.created>=startOfToday()).length;
+ document.getElementById("dayCount").textContent=today;
+ document.getElementById("weekCount").textContent=countSince(7);
+ document.getElementById("monthCount").textContent=countSince(30);
 }
 
-/* SEARCH */
-document.getElementById("search").addEventListener("input",function(){
-  const q=this.value.toLowerCase();
-  render(words.filter(w=>w.toLowerCase().includes(q)));
+
+async function askAIPage(){
+ const input=document.getElementById("aiInput");
+ const out=document.getElementById("aiPageAnswer");
+ const text=input.value.trim();
+ if(!text)return;
+ out.style.display="block";
+ out.textContent="AI javobi uchun server endpoint ulanmagan. Hozirgi app lokal ishlaydi; GPT API keyni frontendga yashirmasdan qo‘yish xavfsiz emas.";
+ // Production hook:
+ // const r=await fetch("/api/ai",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:text})});
+ // const data=await r.json(); out.textContent=data.answer;
+}
+document.getElementById("aiInput").addEventListener("keydown",e=>{
+ if((e.ctrlKey||e.metaKey)&&e.key==="Enter")askAIPage();
 });
 
-/* VOCAB FUNCTIONS */
-function showAll(){ render(words); }
-function showFavorites(){ render([...favorites]); }
-function randomWord(){
-  const r=words[Math.floor(Math.random()*words.length)];
-  document.getElementById("random").textContent=r;
+function updateAll(){
+ document.getElementById("wordCount").textContent=db.words.length;
+ document.getElementById("phraseCount").textContent=db.phrases.length;
+ updateGrowthStats();
+ const box=document.getElementById("levels");box.innerHTML="";
+ levels.slice(1).forEach(l=>{
+  const n=db.words.filter(x=>x.level===l).length+db.phrases.filter(x=>x.level===l).length;
+  box.innerHTML+=`<div class="stat"><span class="level ${l}">${l}</span><b>${n}</b></div>`;
+ });
+ renderWords();renderPhrases();makeStars();
 }
-function quiz(){
-  const w=words[Math.floor(Math.random()*words.length)];
-  const word=w.split(" – ")[0];
-  const answer=w.split(" — ")[1];
-  const user=prompt("Meaning of: "+word);
-  if(user && answer.toLowerCase().includes(user.toLowerCase())){
-    alert("✅ Correct!");
-  } else {
-    alert("❌ Answer: "+answer);
-  }
+function makeStars(){
+ const s=document.getElementById("stars"), count=Math.min(120,15+Math.floor((db.words.length+db.phrases.length)/5));
+ s.innerHTML="";
+ for(let i=0;i<count;i++){let e=document.createElement("i");e.className="star";e.style.left=Math.random()*100+"%";e.style.top=Math.random()*100+"%";e.style.animationDelay=(Math.random()*3)+"s";s.appendChild(e)}
 }
-
-function updateProgress(){
-  document.getElementById("progress").textContent = "Learned: "+learned.size+" / "+words.length;
-}
-
-render(words);
+document.getElementById("quickAdd").addEventListener("keydown",e=>{if(e.key==="Enter")addFromInput()});
+document.getElementById("wordAdd").addEventListener("keydown",e=>{if(e.key==="Enter")addWord()});
+document.getElementById("phraseAdd").addEventListener("keydown",e=>{if(e.key==="Enter")addPhrase()});
+updateAll();
 </script>
 </body>
 </html>
